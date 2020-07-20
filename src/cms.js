@@ -2,7 +2,7 @@ import React from 'react';
 
 /*
     3.2.1.3 CMS
-    
+
     3.2.1.3.1 An icon shall be selected during detailed design to indicate changeable message signs.
     3.2.1.3.2 An icon shall be selected during detailed design to indicate a changeable message sign that is displaying a message.
     3.2.1.3.3 The CMS icon shall be configurable to display the name of the sign with the icon.
@@ -33,3 +33,5 @@ class CMS extends React.Component {
         super(props);
     }
 }
+
+export default CMS;

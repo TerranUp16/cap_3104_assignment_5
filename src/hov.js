@@ -30,3 +30,5 @@ class HOV extends React.Component {
         super(props);
     }
 }
+
+export default HOV;

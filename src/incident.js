@@ -25,3 +25,5 @@ class Incident extends React.Component {
         super(props);
     }
 }
+
+export default Incident;

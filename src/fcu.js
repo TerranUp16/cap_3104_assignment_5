@@ -26,3 +26,5 @@ class FCU extends React.Component {
         super(props);
     }
 }
+
+export default FCU;

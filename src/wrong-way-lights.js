@@ -34,3 +34,5 @@ class WrongWayLights extends React.Component {
         super(props);
     }
 }
+
+export default WrongWayLights;

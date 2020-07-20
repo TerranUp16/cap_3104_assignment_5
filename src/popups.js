@@ -34,3 +34,5 @@ class Popups extends React.Component {
         super(props);
     }
 }
+
+export default Popups;

@@ -50,3 +50,5 @@ class LoopDetector extends React.Component {
         super(props);
     }
 }
+
+export default LoopDetector;
