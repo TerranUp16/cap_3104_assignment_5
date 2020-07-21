@@ -5,6 +5,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Figure from 'react-bootstrap/Figure';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
+import * as helper from './helper';
 
 /*
     3.2.1.2 Popups
@@ -31,16 +32,16 @@ class Popups extends React.Component {
         let status = 'Operational' ;
 
         // Override defaults based on props
-        if (this.props.popupGroupName in this.props) {
+        if (this.props.hasOwnProperty('popupGroupName')) {
             name = this.props.popupGroupName;
         }
 
-        if (this.props.popupGroupState in this.props) {
+        if (this.props.hasOwnProperty('popupGroupState')) {
             state = this.props.popupGroupState;
         }
 
-        if (this.props.popupGroupStatus in this.props) {
-            status = this.props.popupGroupState;
+        if (this.props.hasOwnProperty('popupGroupStatus')) {
+            status = this.props.popupGroupStatus;
         }
 
         // Create references
@@ -385,8 +386,8 @@ class Popups extends React.Component {
                                             custom
                                             onChange={this.changeHandler}
                                         >
-                                            <option>Down</option>
-                                            <option>Up</option>
+                                            {helper.selectedOption(this.state.popupGroupState, 'Down')}
+                                            {helper.selectedOption(this.state.popupGroupState, 'Up')}
                                         </Form.Control>
                                     </Form.Group>
                                     <Form.Group controlId={`${this.props.popupGroupID}-Status`}>
@@ -397,9 +398,9 @@ class Popups extends React.Component {
                                             custom
                                             onChange={this.changeHandler}
                                         >
-                                            <option>Operational</option>
-                                            <option>Failed</option>
-                                            <option>No Data</option>
+                                            {helper.selectedOption(this.state.popupGroupStatus, 'Operational')}
+                                            {helper.selectedOption(this.state.popupGroupStatus, 'Failed')}
+                                            {helper.selectedOption(this.state.popupGroupStatus, 'No Data')}
                                         </Form.Control>
                                     </Form.Group>
                                     {this.nameSwitch()}

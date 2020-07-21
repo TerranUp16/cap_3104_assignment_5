@@ -5,6 +5,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Figure from 'react-bootstrap/Figure';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
+import * as helper from './helper';
 
 /*
     3.2.1.1 Gates
@@ -32,15 +33,15 @@ class Gate extends React.Component {
         let status = 'Operational';
 
         // Override defaults based on props
-        if (this.props.gateName in this.props) {
+        if (this.props.hasOwnProperty('gateName')) {
             name = this.props.gateName;
         }
 
-        if (this.props.gateOpen in this.props) {
+        if (this.props.hasOwnProperty('gateOpen')) {
             open = this.props.gateOpen;
         }
 
-        if (this.props.gateStatus in this.props) {
+        if (this.props.hasOwnProperty('gateStatus')) {
             status = this.props.gateStatus;
         }
 
@@ -410,9 +411,9 @@ class Gate extends React.Component {
                                             custom
                                             onChange={this.changeHandler}
                                         >
-                                            <option>Open</option>
-                                            <option>Partially Open</option>
-                                            <option>Closed</option>
+                                            {helper.selectedOption(this.state.gateOpen, 'Open')}
+                                            {helper.selectedOption(this.state.gateOpen, 'Partially Open')}
+                                            {helper.selectedOption(this.state.gateOpen, 'Closed')}
                                         </Form.Control>
                                     </Form.Group>
                                     <Form.Group controlId={`${this.props.gateID}-Status`}>
@@ -423,9 +424,9 @@ class Gate extends React.Component {
                                             custom
                                             onChange={this.changeHandler}
                                         >
-                                            <option>Operational</option>
-                                            <option>Failed</option>
-                                            <option>No Data</option>
+                                            {helper.selectedOption(this.state.gateStatus, 'Operational')}
+                                            {helper.selectedOption(this.state.gateStatus, 'Failed')}
+                                            {helper.selectedOption(this.state.gateStatus, 'No Data')}
                                         </Form.Control>
                                     </Form.Group>
                                     {this.nameSwitch()}

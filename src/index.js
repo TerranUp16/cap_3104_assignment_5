@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Gate from './gate.js';
-import PopupGroup from './popups.js';
+import Popups from './popups.js';
+import CMS from './cms.js';
 
-ReactDOM.render(<PopupGroup popupGroupID={1} />, document.getElementById('root'));
+ReactDOM.render(<CMS cmsID={1} />, document.getElementById('root'));
