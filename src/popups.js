@@ -1,4 +1,10 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import Form from 'react-bootstrap/Form';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Figure from 'react-bootstrap/Figure';
+import Overlay from 'react-bootstrap/Overlay';
+import Popover from 'react-bootstrap/Popover';
 
 /*
     3.2.1.2 Popups
@@ -15,23 +21,397 @@ import React from 'react';
     3.2.1.2.9.1 If operation of the device is locked out for safety reasons a command option will be “grayed out” and not selectable.
 */
 
-/*
-NEEDS-
-    Popover for popup group summary, status, and control- https://react-bootstrap.github.io/components/overlays/#popovers
-        Summary is on-hover
-        "Detailed stauts" is on double-left-click
-        Control is on right-click
-Props-
-    popupGroupName: String,
-    popupGroupShowName: [true, false],
-    popupGroupState: [up, down],
-    popupGroupShowState: [true, false],
-    popupGroupStatus: [operational, failure],
-    popupGroupShowStatus: [true, false]
-*/
 class Popups extends React.Component {
     constructor(props) {
         super(props);
+
+        // Set defaults
+        let name = 'Popup Group';
+        let state = 'Down' ;
+        let status = 'Operational' ;
+
+        // Override defaults based on props
+        if (this.props.popupGroupName in this.props) {
+            name = this.props.popupGroupName;
+        }
+
+        if (this.props.popupGroupState in this.props) {
+            state = this.props.popupGroupState;
+        }
+
+        if (this.props.popupGroupStatus in this.props) {
+            status = this.props.popupGroupState;
+        }
+
+        // Create references
+        this.figureRef = React.createRef();
+        this.figureImageRef = React.createRef();
+
+        // Set state
+        this.state = {
+            popupGroupName: name,
+            popupGroupShowName: false,
+            popupGroupState: state,
+            popupGroupShowState: false,
+            popupGroupStatus: status,
+            popupGroupShowStatus: false,
+            popupGroupShowSummary: false,
+            popupGroupShowDetailedStatus: false,
+            popupGroupShowControl: false,
+            popupGroupImage: require("./Images/gate.png"),
+            caption: '',
+            circle: false
+        }
+    }
+
+    // Show/Hide summary
+    summary = (event) => {
+        let show = !this.state.popupGroupShowSummary;
+        this.setState({
+            popupGroupShowSummary: show
+        });
+    }
+
+    // Show/Hide detailed status
+    detailedStatus = (event) => {
+        let show = !this.state.popupGroupShowDetailedStatus;
+
+        let circle = show || this.state.popupGroupShowControl;
+
+        this.setState({
+            popupGroupShowDetailedStatus: show,
+            circle: circle
+        }, this.setImage);
+    }
+
+    // Show/Hide contextual control
+    control = (event) => {
+        event.preventDefault();
+
+        let show = !this.state.popupGroupShowControl;
+
+        let circle = show || this.state.popupGroupShowDetailedStatus;
+
+        this.setState({
+            popupGroupShowControl: show,
+            circle: circle
+        }, this.setImage);
+    }
+
+    // Set which image to display
+    setImage = () => {
+        if (this.state.popupGroupStatus === 'Failed' && !this.state.circle) {
+            // If popup group is in a failed state, we need to display the failed state image regardless of whether state is up or down
+            this.setState({popupGroupImage: require("./Images/gate.png")});
+        } else if (this.state.popupGroupStatus === 'Failed' && this.state.circle) {
+            // If popup group is in a failed state, we need to display the failed state image regardless of whether state is up or down (in this case, with circle)
+            this.setState({popupGroupImage: require("./Images/gate_circled.png")});
+        } else if (this.state.popupGroupState === 'Up' && !this.state.circle && this.state.popupGroupStatus === 'Operational') {
+            // Up popup group painted green
+            this.setState({popupGroupImage: require("./Images/gate.png")});
+        } else if (this.state.popupGroupState === 'Up' && this.state.circle && this.state.popupGroupStatus === 'Operational') {
+            // Up popup group painted green with circle
+            this.setState({popupGroupImage: require("./Images/gate_circled.png")});
+        } else if (this.state.popupGroupState === 'Up' && !this.state.circle && this.state.popupGroupStatus === 'No Data') {
+            // Up popup group painted gray
+            this.setState({popupGroupImage: require("./Images/gate.png")});
+        } else if (this.state.popupGroupState === 'Up' && this.state.circle && this.state.popupGroupStatus === 'No Data') {
+            // Up popup group painted gray with circle
+            this.setState({popupGroupImage: require("./Images/gate_circled.png")});
+        } else if (this.state.popupGroupState === 'Down' && !this.state.circle && this.state.popupGroupStatus === 'Operational') {
+            // Down popup group painted green
+            this.setState({popupGroupImage: require("./Images/gate.png")});
+        } else if (this.state.popupGroupState === 'Down' && this.state.circle && this.state.popupGroupStatus === 'Operational') {
+            // Down popup group painted green with circle
+            this.setState({popupGroupImage: require("./Images/gate_circled.png")});
+        } else if (this.state.popupGroupState === 'Down' && !this.state.circle && this.state.popupGroupStatus === 'No Data') {
+            // Down popup group painted gray
+            this.setState({popupGroupImage: require("./Images/gate.png")});
+        } else if (this.state.popupGroupState === 'Down' && this.state.circle && this.state.popupGroupStatus === 'No Data') {
+            // Down popup group painted gray with circle
+            this.setState({popupGroupImage: require("./Images/gate_circled.png")});
+        }
+    }
+
+    changeHandler = (event) => {
+        let nam = event.target.name;
+        let val = event.target.value;
+        this.setState({[nam]: val}, this.setCaption);
+    }
+
+    switchHandler = (event) => {
+        let nam = event.target.name;
+        let newState = !this.state[nam];
+        this.setState({[nam]: newState}, this.setCaption);
+    }
+
+    setCaption = () => {
+        if (this.state.popupGroupShowName && this.state.popupGroupShowState && this.state.popupGroupShowStatus) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.popupGroupName}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.popupGroupState}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.popupGroupStatus}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else if (this.state.popupGroupShowName && this.state.popupGroupShowState) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-2">{`Name: ${this.state.popupGroupName}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-2">{`State: ${this.state.popupGroupState}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else if (this.state.popupGroupShowName && this.state.popupGroupShowStatus) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-2">{`Name: ${this.state.popupGroupName}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-2">{`Status: ${this.state.popupGroupStatus}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else if (this.state.popupGroupShowState && this.state.popupGroupShowStatus) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-2">{`State: ${this.state.popupGroupState}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-2">{`Status: ${this.state.popupGroupStatus}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else if (this.state.popupGroupShowName) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-3">{`Name: ${this.state.popupGroupName}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else if (this.state.popupGroupShowState) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-3">{`State: ${this.state.popupGroupState}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else if (this.state.popupGroupShowStatus) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-3">{`Status: ${this.state.popupGroupStatus}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else {
+            this.setState({caption: ''}, this.setImage);
+        }
+    }
+
+    nameSwitch = () => {
+        if (this.state.popupGroupShowName === true) {
+            return (
+                <Form.Check
+                    type="switch"
+                    id={`${this.props.popupGroupID}-ShowName`}
+                    name="popupGroupShowName"
+                    label="Show name?"
+                    onChange={this.switchHandler}
+                    custom
+                    checked
+                />
+            );
+        } else {
+            return (
+                <Form.Check
+                    type="switch"
+                    id={`${this.props.popupGroupID}-ShowName`}
+                    name="popupGroupShowName"
+                    label="Show name?"
+                    onChange={this.switchHandler}
+                    custom
+                />
+            );
+        }
+    }
+
+    stateSwitch = () => {
+        if (this.state.popupGroupShowState === true) {
+            return (
+                <Form.Check
+                    type="switch"
+                    id={`${this.props.popupGroupID}-ShowState`}
+                    name="popupGroupShowState"
+                    label="Show state?"
+                    onChange={this.switchHandler}
+                    custom
+                    checked
+                />
+            );
+        } else {
+            return (
+                <Form.Check
+                    type="switch"
+                    id={`${this.props.popupGroupID}-ShowState`}
+                    name="popupGroupShowState"
+                    label="Show state?"
+                    onChange={this.switchHandler}
+                    custom
+                />
+            );
+        }
+    }
+
+    statusSwitch = () => {
+        if (this.state.popupGroupShowStatus === true) {
+            return (
+                <Form.Check
+                    type="switch"
+                    id={`${this.props.popupGroupID}-ShowStatus`}
+                    name="popupGroupShowStatus"
+                    label="Show status?"
+                    onChange={this.switchHandler}
+                    custom
+                    checked
+                />
+            );
+        } else {
+            return (
+                <Form.Check
+                    type="switch"
+                    id={`${this.props.popupGroupID}-ShowStatus`}
+                    name="popupGroupShowStatus"
+                    label="Show status?"
+                    onChange={this.switchHandler}
+                    custom
+                />
+            );
+        }
+    }
+
+    render() {
+        return (
+            <>
+                <Figure
+                    id={this.props.popupGroupID}
+                    ref={this.figureRef}
+                    onMouseOver={this.summary}
+                    onDoubleClick={this.detailedStatus}
+                    onContextMenu={this.control}
+                >
+                    <Figure.Image
+                        ref={this.figureImageRef}
+                        height={50}
+                        alt={`${this.state.popupGroupName} ${this.state.popupGroupState}`}
+                        src={this.state.popupGroupImage}
+                    />
+                    {this.state.caption}
+                </Figure>
+                <Overlay
+                    target={this.figureRef}
+                    show={this.state.popupGroupShowSummary}
+                    placement="right"
+                >
+                    {(props) => (
+                        <Popover {...props}>
+                            <Popover.Title as="h3">
+                                {`${this.state.popupGroupName} Summary`}
+                            </Popover.Title>
+                            <Popover.Content>
+                                <ListGroup variant="flush">
+                                    <ListGroup.Item>{`State: ${this.state.popupGroupState}`}</ListGroup.Item>
+                                    <ListGroup.Item>{`Status: ${this.state.popupGroupStatus}`}</ListGroup.Item>
+                                </ListGroup>
+                            </Popover.Content>
+                        </Popover>
+                    )}
+                </Overlay>
+                <Overlay
+                    target={this.figureRef}
+                    show={this.state.popupGroupShowDetailedStatus}
+                    placement="bottom"
+                >
+                    {(props) => (
+                        <Popover {...props}>
+                            <Popover.Title as="h3">
+                                {`${this.state.popupGroupName} Detailed Status`}
+                            </Popover.Title>
+                            <Popover.Content>
+                                <ListGroup variant="flush">
+                                    <ListGroup.Item>{`State: ${this.state.popupGroupState}`}</ListGroup.Item>
+                                    <ListGroup.Item>{`Status: ${this.state.popupGroupStatus}`}</ListGroup.Item>
+                                </ListGroup>
+                            </Popover.Content>
+                        </Popover>
+                    )}
+                </Overlay>
+                <Overlay
+                    target={this.figureRef}
+                    show={this.state.popupGroupShowControl}
+                    placement="right"
+                >
+                    {(props) => (
+                        <Popover {...props}>
+                            <Popover.Title as="h3">
+                                {`Control ${this.state.popupGroupName}`}
+                            </Popover.Title>
+                            <Popover.Content>
+                                <Form>
+                                    <Form.Group controlId={`${this.props.popupGroupID}-Name`}>
+                                        <Form.Label>Change Name</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            name="popupGroupName"
+                                            placeholder={this.state.popupGroupName}
+                                            onChange={this.changeHandler}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group controlId={`${this.props.popupGroupID}-State`}>
+                                        <Form.Label>Change State</Form.Label>
+                                        <Form.Control
+                                            as="select"
+                                            name="popupGroupState"
+                                            custom
+                                            onChange={this.changeHandler}
+                                        >
+                                            <option>Down</option>
+                                            <option>Up</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                    <Form.Group controlId={`${this.props.popupGroupID}-Status`}>
+                                        <Form.Label>Change Status</Form.Label>
+                                        <Form.Control
+                                            as="select"
+                                            name="popupGroupStatus"
+                                            custom
+                                            onChange={this.changeHandler}
+                                        >
+                                            <option>Operational</option>
+                                            <option>Failed</option>
+                                            <option>No Data</option>
+                                        </Form.Control>
+                                    </Form.Group>
+                                    {this.nameSwitch()}
+                                    {this.stateSwitch()}
+                                    {this.statusSwitch()}
+                                </Form>
+                            </Popover.Content>
+                        </Popover>
+                    )}
+                </Overlay>
+            </>
+        );
     }
 }
 

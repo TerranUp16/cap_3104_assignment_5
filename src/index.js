@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Gate from './gate.js';
+import PopupGroup from './popups.js';
 
-ReactDOM.render(<Gate gateID={1} />, document.getElementById('root'));
+ReactDOM.render(<PopupGroup popupGroupID={1} />, document.getElementById('root'));

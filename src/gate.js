@@ -22,21 +22,6 @@ import Popover from 'react-bootstrap/Popover';
     3.2.1.1.9.1 If operation of the device is locked out for safety reasons a command option will be “grayed out” and not selectable.
 */
 
-/*
-NEEDS-
-    Popover for gate summary, status, and control- https://react-bootstrap.github.io/components/overlays/#popovers
-        Summary is on-hover
-        "Detailed stauts" is on double-left-click
-        Control is on right-click
-Props-
-    gateID: String,
-    gateName: String,
-    gateShowName: [true, false],
-    gateOpen: [Open, Partially Open, Closed],
-    gateShowState: [true, false],
-    gateStatus: [Operational, Failed, No Data],
-    gateShowStatus: [true, false]
-*/
 class Gate extends React.Component {
     constructor(props) {
         super(props);
@@ -62,7 +47,6 @@ class Gate extends React.Component {
         // Create references
         this.figureRef = React.createRef();
         this.figureImageRef = React.createRef();
-        this.canvasRef = React.createRef();
 
         // Set state
         this.state = {
@@ -177,7 +161,7 @@ class Gate extends React.Component {
     changeHandler = (event) => {
         let nam = event.target.name;
         let val = event.target.value;
-        this.setState({[nam]: val}, this.setImage);
+        this.setState({[nam]: val}, this.setCaption);
     }
 
     switchHandler = (event) => {
@@ -197,7 +181,7 @@ class Gate extends React.Component {
                             <ListGroup.Item className="py-1">{`Status: ${this.state.gateStatus}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
-            });
+            }, this.setImage);
         } else if (this.state.gateShowName && this.state.gateShowState) {
             this.setState({
                 caption:
@@ -207,7 +191,7 @@ class Gate extends React.Component {
                             <ListGroup.Item className="py-2">{`State: ${this.state.gateOpen}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
-            });
+            }, this.setImage);
         } else if (this.state.gateShowName && this.state.gateShowStatus) {
             this.setState({
                 caption:
@@ -217,7 +201,7 @@ class Gate extends React.Component {
                             <ListGroup.Item className="py-2">{`Status: ${this.state.gateStatus}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
-            });
+            }, this.setImage);
         } else if (this.state.gateShowState && this.state.gateShowStatus) {
             this.setState({
                 caption:
@@ -227,7 +211,7 @@ class Gate extends React.Component {
                             <ListGroup.Item className="py-2">{`Status: ${this.state.gateStatus}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
-            });
+            }, this.setImage);
         } else if (this.state.gateShowName) {
             this.setState({
                 caption:
@@ -236,7 +220,7 @@ class Gate extends React.Component {
                             <ListGroup.Item className="py-3">{`Name: ${this.state.gateName}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
-            });
+            }, this.setImage);
         } else if (this.state.gateShowState) {
             this.setState({
                 caption:
@@ -245,7 +229,7 @@ class Gate extends React.Component {
                             <ListGroup.Item className="py-3">{`State: ${this.state.gateOpen}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
-            });
+            }, this.setImage);
         } else if (this.state.gateShowStatus) {
             this.setState({
                 caption:
@@ -254,9 +238,90 @@ class Gate extends React.Component {
                             <ListGroup.Item className="py-3">{`Status: ${this.state.gateStatus}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
-            });
+            }, this.setImage);
         } else {
-            this.setState({caption: ''});
+            this.setState({caption: ''}, this.setImage);
+        }
+    }
+
+    nameSwitch = () => {
+        if (this.state.gateShowName === true) {
+            return (
+                <Form.Check
+                    type="switch"
+                    id={`${this.props.gateID}-ShowName`}
+                    name="gateShowName"
+                    label="Show name?"
+                    onChange={this.switchHandler}
+                    custom
+                    checked
+                />
+            );
+        } else {
+            return (
+                <Form.Check
+                    type="switch"
+                    id={`${this.props.gateID}-ShowName`}
+                    name="gateShowName"
+                    label="Show name?"
+                    onChange={this.switchHandler}
+                    custom
+                />
+            );
+        }
+    }
+
+    stateSwitch = () => {
+        if (this.state.gateShowState === true) {
+            return (
+                <Form.Check
+                    type="switch"
+                    id={`${this.props.gateID}-ShowState`}
+                    name="gateShowState"
+                    label="Show state?"
+                    onChange={this.switchHandler}
+                    custom
+                    checked
+                />
+            );
+        } else {
+            return (
+                <Form.Check
+                    type="switch"
+                    id={`${this.props.gateID}-ShowState`}
+                    name="gateShowState"
+                    label="Show state?"
+                    onChange={this.switchHandler}
+                    custom
+                />
+            );
+        }
+    }
+
+    statusSwitch = () => {
+        if (this.state.gateShowStatus === true) {
+            return (
+                <Form.Check
+                    type="switch"
+                    id={`${this.props.gateID}-ShowStatus`}
+                    name="gateShowStatus"
+                    label="Show status?"
+                    onChange={this.switchHandler}
+                    custom
+                    checked
+                />
+            );
+        } else {
+            return (
+                <Form.Check
+                    type="switch"
+                    id={`${this.props.gateID}-ShowStatus`}
+                    name="gateShowStatus"
+                    label="Show status?"
+                    onChange={this.switchHandler}
+                    custom
+                />
+            );
         }
     }
 
@@ -332,7 +397,7 @@ class Gate extends React.Component {
                                         <Form.Label>Change Name</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            name="gateOpen"
+                                            name="gateName"
                                             placeholder={this.state.gateName}
                                             onChange={this.changeHandler}
                                         />
@@ -363,43 +428,14 @@ class Gate extends React.Component {
                                             <option>No Data</option>
                                         </Form.Control>
                                     </Form.Group>
-                                    <Form.Check
-                                        type="switch"
-                                        id={`${this.props.gateID}-ShowName`}
-                                        name="gateShowName"
-                                        label="Show name?"
-                                        onChange={this.switchHandler}
-                                        custom
-                                    />
-                                    <Form.Check
-                                        type="switch"
-                                        id={`${this.props.gateID}-ShowState`}
-                                        name="gateShowState"
-                                        label="Show gate's state?"
-                                        onChange={this.switchHandler}
-                                        custom
-                                    />
-                                    <Form.Check
-                                        type="switch"
-                                        id={`${this.props.gateID}-ShowStatus`}
-                                        name="gateShowStatus"
-                                        label="Show gate's status?"
-                                        onChange={this.switchHandler}
-                                        custom
-                                    />
+                                    {this.nameSwitch()}
+                                    {this.stateSwitch()}
+                                    {this.statusSwitch()}
                                 </Form>
                             </Popover.Content>
                         </Popover>
                     )}
                 </Overlay>
-                <canvas
-                    id={`${this.props.gateID}-Canvas`}
-                    ref={this.canvasRef}
-                    width={this.figureImageRef.width}
-                    height={this.figureImageRef.height}
-                >
-
-                </canvas>
             </>
         );
     }
