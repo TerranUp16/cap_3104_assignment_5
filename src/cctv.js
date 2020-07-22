@@ -1,4 +1,11 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
+import Form from 'react-bootstrap/Form';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Figure from 'react-bootstrap/Figure';
+import Overlay from 'react-bootstrap/Overlay';
+import Popover from 'react-bootstrap/Popover';
+import * as helper from './helper';
 
 /*
     3.2.1.4 CCTV Camera
@@ -29,7 +36,81 @@ Props-
 class CCTV extends React.Component {
     constructor(props) {
         super(props);
+
+        // Set defaults
+        let name = 'Camera';
+        let state = 'On';
+        let status = 'Operational'
+
+        // Override defaults based on props
+        if (this.props.hasOwnProperty('cctvName')) {
+            name = this.props.cctvName;
+        }
+
+        if (this.props.hasOwnProperty('cctvState')) {
+            state = this.props.cctvState;
+        }
+
+        if (this.props.hasOwnProperty('cctvStatus')) {
+            status = this.props.cctvStatus;
+        }
+
+        // Create references
+        this.figureRef = React.createRef();
+        this.figureImageRef = React.createRef();
+        
+        // Set state
+        this.state = {
+            cctvName: name,
+            cctvShowName: false,
+            cctvState: state,
+            cctvShowState: false,
+            cctvStatus: status,
+            cctvShowStatus: false,
+            cctvShowSummary: false,
+            cctvShowDetailedStatus: false,
+            cctvShowControl: false,
+            cctvImage: require("./Images/gate.png"),
+            caption: '',
+            circle: false
+        }
     }
+
+    // Show/Hide summary
+    summary = (event) => {
+        let show = !this.state.cctvShowSummary;
+        this.setState({
+            cctvShowSummary: show
+        });
+    }
+
+    // Show/Hide detailed status
+    detailedStatus = (event) => {
+        let show = !this.state.cctvShowDetailedStatus;
+
+        let circle = show || this.state.cctvShowControl;
+
+        this.setState({
+            cctvShowDetailedStatus: show,
+            circle: circle
+        }, this.setImage);
+    }
+
+    // Show/Hide contextual control
+    control = (event) => {
+        event.preventDefault();
+
+        let show = !this.state.cctvShowControl;
+
+        let circle = show || this.state.cctvShowDetailedStatus;
+
+        this.setState({
+            cctvShowControl: show,
+            circle: circle
+        }, this.setImage);
+    }
+
+    
 }
 
 export default CCTV;

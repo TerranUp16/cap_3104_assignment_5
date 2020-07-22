@@ -5,33 +5,18 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Figure from 'react-bootstrap/Figure';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
-import Component from './component';
 import * as helper from './helper';
 
-/*
-    3.2.1.1 Gates
-    The gates referred to in this section are the entrance blocking gates at both ends of the freeway.
-    
-    3.2.1.1.1 An icon shall be selected during detailed design to show a gate in a closed position.
-    3.2.1.1.2 An icon shall be selected during detailed design to show a gate in an open position.
-    3.2.1.1.3 An icon shall be selected during detailed design to show a gate in a partially open (15%) openposition.
-    3.2.1.1.4 The gate icon shall be configurable to show the name of the gate with the icon.
-    3.2.1.1.5 The gate icon shall be configurable to show the state of the gate (e.g., open or close).
-    3.2.1.1.6 The gate icon shall be configurable to show the status of the gate (operational, failed, or no data). The color of the gate icon shall be changed to show the status of the gate.
-    3.2.1.1.7 When the operator moves the mouse over a gate icon a text window shall be displayed showing a summary of the gate status.  The details of the summary status display will be defined in the GUI design document.
-    3.2.1.1.8 The operator shall be able to activate a detailed device status window for the selected gate by doubleleft clicking on the icon.  This action shall cause a circle to be displayed over the gate icon for as long as the detailed device status window is displayed for that gate.
-    3.2.1.1.9 The operator shall be able to activate a device control window for the selected gate by right clicking on the icon.  The right click on the icons shall display a pop-up menu of available device actions from which the user may select.  This action shall cause a circle to be displayed over the gate icon for aslong as the device control window is displayed for that gate.
-    3.2.1.1.9.1 If operation of the device is locked out for safety reasons a command option will be “grayed out” and not selectable.
-*/
-
-class Gate extends Component {
+class Component extends React.Component {
     constructor(props) {
         super(props);
 
         // Set defaults
-        let name = 'Gate';
-        let state = 'Open';
+        let name = 'Component';
+        let state = 'On';
         let status = 'Operational';
+        let width = 128;
+        let height = 128;
 
         // Override defaults based on props
         if (this.props.hasOwnProperty('name')) {
@@ -46,75 +31,44 @@ class Gate extends Component {
             status = this.props.status;
         }
 
+        if (this.props.hasOwnProperty('width')) {
+            width = this.props.width;
+        }
+
+        if (this.props.hasOwnProperty('height')) {
+            height = this.props.height;
+        }
+
         // Create references
         this.figureRef = React.createRef();
-        this.figureImageRef = React.createRef();
+        this.figureImageref = React.createRef();
 
         // Set state
         this.state = {
-            ...this.state,
+            width: width,
+            height: height,
             name: name,
+            showName: false,
             state: state,
-            status: status
-        };
+            showState: false,
+            status: status,
+            showStatus: false,
+            showSummary: false,
+            showDetailedstatus: false,
+            showControl: false,
+            image: "/Images/gate-green.svg",
+            caption: '',
+            circle: false,
+            safetyLock: false
+        }
     }
 
     // Set which image to display
     setImage = () => {
-        if (this.state.state === 'Open' && !this.state.circle && this.state.status === 'Operational') {
-            // Open gate painted green
+        if (this.state.circle) {
+            this.setState({image: "/Images/gate_circled.png"});
+        } else {
             this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Open' && this.state.circle && this.state.status === 'Operational') {
-            // Open gate painted green with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Open' && !this.state.circle && this.state.status === 'Failed') {
-            // Open gate painted red
-            this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Open' && this.state.circle && this.state.status === 'Failed') {
-            // Open gate painted red with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Open' && !this.state.circle && this.state.status === 'No Data') {
-            // Open gate painted gray
-            this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Open' && this.state.circle && this.state.status === 'No Data') {
-            // Open gate painted gray with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Partially Open' && !this.state.circle && this.state.status === 'Operational') {
-            // Partially open gate painted green
-            this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Partially Open' && this.state.circle && this.state.status === 'Operational') {
-            // Partially open gate painted green with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Partially Open' && !this.state.circle && this.state.status === 'Failed') {
-            // Partially open gate painted red
-            this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Partially Open' && this.state.circle && this.state.status === 'Failed') {
-            // Partially open gate painted red with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Partially Open' && !this.state.circle && this.state.status === 'No Data') {
-            // Partially open gate painted gray
-            this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Partially Open' && this.state.circle && this.state.status === 'No Data') {
-            // Partially open gate painted gray with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Closed' && !this.state.circle && this.state.status === 'Operational') {
-            // Closed gate painted green
-            this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Closed' && this.state.circle && this.state.status === 'Operational') {
-            // Closed gate painted green with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Closed' && !this.state.circle && this.state.status === 'Failed') {
-            // Closed gate painted red
-            this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Closed' && this.state.circle && this.state.status === 'Failed') {
-            // Closed gate painted red with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Closed' && !this.state.circle && this.state.status === 'No Data') {
-            // Closed gate painted gray
-            this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Closed' && this.state.circle && this.state.status === 'No Data') {
-            // Closed gate painted gray with circle
-            this.setState({image: "./Images/gate_circled.png"});
         }
     }
 
@@ -263,14 +217,13 @@ class Gate extends Component {
                                 <Form>
                                     {helper.addText(this.props.componentID, this, 'name', 'Change Name', this.state.name)}
                                     {helper.addSelect(this.props.componentID, this, 'state', 'Change State', [
-                                        'Open',
-                                        'Partially Open',
-                                        'Closed'
+                                        'On',
+                                        'Off'
                                     ])}
                                     {helper.addSelect(this.props.componentID, this, 'status', 'Change Status', [
                                         'Operational',
                                         'Failed',
-                                        'No Data'
+                                        'No Communication'
                                     ])}
                                     {helper.addSwitch(this.props.componentID, this, 'showName', 'Show name?')}
                                     {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
@@ -282,8 +235,8 @@ class Gate extends Component {
                     )}
                 </Overlay>
             </>
-        );
+        )
     }
 }
 
-export default Gate;
+export default Component;
