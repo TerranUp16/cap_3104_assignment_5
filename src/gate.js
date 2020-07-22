@@ -69,13 +69,13 @@ class Gate extends Component {
             this.setState({image: "./Images/gate_circled.png"});
         } else if (this.state.state === 'Open' && !this.state.circle && this.state.status === 'Failed') {
             // Open gate painted red
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-red.svg"});
         } else if (this.state.state === 'Open' && this.state.circle && this.state.status === 'Failed') {
             // Open gate painted red with circle
             this.setState({image: "./Images/gate_circled.png"});
         } else if (this.state.state === 'Open' && !this.state.circle && this.state.status === 'No Data') {
             // Open gate painted gray
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-gray.svg"});
         } else if (this.state.state === 'Open' && this.state.circle && this.state.status === 'No Data') {
             // Open gate painted gray with circle
             this.setState({image: "./Images/gate_circled.png"});
@@ -87,13 +87,13 @@ class Gate extends Component {
             this.setState({image: "./Images/gate_circled.png"});
         } else if (this.state.state === 'Partially Open' && !this.state.circle && this.state.status === 'Failed') {
             // Partially open gate painted red
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-red.svg"});
         } else if (this.state.state === 'Partially Open' && this.state.circle && this.state.status === 'Failed') {
             // Partially open gate painted red with circle
             this.setState({image: "./Images/gate_circled.png"});
         } else if (this.state.state === 'Partially Open' && !this.state.circle && this.state.status === 'No Data') {
             // Partially open gate painted gray
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-gray.svg"});
         } else if (this.state.state === 'Partially Open' && this.state.circle && this.state.status === 'No Data') {
             // Partially open gate painted gray with circle
             this.setState({image: "./Images/gate_circled.png"});
@@ -105,13 +105,13 @@ class Gate extends Component {
             this.setState({image: "./Images/gate_circled.png"});
         } else if (this.state.state === 'Closed' && !this.state.circle && this.state.status === 'Failed') {
             // Closed gate painted red
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-red.svg"});
         } else if (this.state.state === 'Closed' && this.state.circle && this.state.status === 'Failed') {
             // Closed gate painted red with circle
             this.setState({image: "./Images/gate_circled.png"});
         } else if (this.state.state === 'Closed' && !this.state.circle && this.state.status === 'No Data') {
             // Closed gate painted gray
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-gray.svg"});
         } else if (this.state.state === 'Closed' && this.state.circle && this.state.status === 'No Data') {
             // Closed gate painted gray with circle
             this.setState({image: "./Images/gate_circled.png"});
