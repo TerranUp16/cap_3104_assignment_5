@@ -112,7 +112,7 @@ class Popups extends Component {
     }
 
     setCaption = () => {
-        if (this.state.popupGroupShowName && this.state.popupGroupShowState && this.state.popupGroupShowStatus) {
+        if (this.state.showName && this.state.showState && this.state.showStatus) {
             this.setState({
                 caption:
                     <Figure.Caption>
@@ -123,7 +123,7 @@ class Popups extends Component {
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
-        } else if (this.state.popupGroupShowName && this.state.popupGroupShowState) {
+        } else if (this.state.showName && this.state.showState) {
             this.setState({
                 caption:
                     <Figure.Caption>
@@ -133,7 +133,7 @@ class Popups extends Component {
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
-        } else if (this.state.popupGroupShowName && this.state.popupGroupShowStatus) {
+        } else if (this.state.showName && this.state.showStatus) {
             this.setState({
                 caption:
                     <Figure.Caption>
@@ -143,7 +143,7 @@ class Popups extends Component {
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
-        } else if (this.state.popupGroupShowState && this.state.popupGroupShowStatus) {
+        } else if (this.state.showState && this.state.showStatus) {
             this.setState({
                 caption:
                     <Figure.Caption>
@@ -153,7 +153,7 @@ class Popups extends Component {
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
-        } else if (this.state.popupGroupShowName) {
+        } else if (this.state.showName) {
             this.setState({
                 caption:
                     <Figure.Caption>
@@ -162,7 +162,7 @@ class Popups extends Component {
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
-        } else if (this.state.popupGroupShowState) {
+        } else if (this.state.showState) {
             this.setState({
                 caption:
                     <Figure.Caption>
@@ -171,7 +171,7 @@ class Popups extends Component {
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
-        } else if (this.state.popupGroupShowStatus) {
+        } else if (this.state.showStatus) {
             this.setState({
                 caption:
                     <Figure.Caption>

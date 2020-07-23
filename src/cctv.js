@@ -20,20 +20,6 @@ import * as helper from './helper';
     3.2.1.4.7 The user shall be able to activate a device control window for the selected camera by right clicking on the icon. The right click on the icon shall display a pop-up menu of available device actions from which the user may select. This action shall cause a circle to be displayed over the camera icon for as long as the device control window is displayed for that camera.
 */
 
-/*
-NEEDS-
-    Popover for cctv summary, status, and control- https://react-bootstrap.github.io/components/overlays/#popovers
-        Summary is on-hover
-        "Detailed stauts" is on double-left-click
-        Control is on right-click
-Props-
-    name: String,
-    cctvShowName: [true, false],
-    state: [on, off],
-    cctvShowState: [true, false],
-    status: [operational, no communication, failed],
-    cctvShowStatus: [true, false]
-*/
 class CCTV extends Component {
     constructor(props) {
         super(props);
