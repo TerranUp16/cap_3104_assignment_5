@@ -15,8 +15,10 @@ class Component extends React.Component {
         let name = 'Component';
         let state = 'On';
         let status = 'Operational';
-        let width = 128;
-        let height = 128;
+        let width = 64;
+        let height = 64;
+        let x = 0;
+        let y = 0;
 
         // Override defaults based on props
         if (this.props.hasOwnProperty('name')) {
@@ -39,6 +41,14 @@ class Component extends React.Component {
             height = this.props.height;
         }
 
+        if (this.props.hasOwnProperty('x')) {
+            x = this.props.x;
+        }
+
+        if (this.props.hasOwnProperty('y')) {
+            y = this.props.y;
+        }
+
         // Create references
         this.figureRef = React.createRef();
         this.figureImageref = React.createRef();
@@ -47,6 +57,8 @@ class Component extends React.Component {
         this.state = {
             width: width,
             height: height,
+            x: x,
+            y: y,
             name: name,
             showName: false,
             state: state,
@@ -66,7 +78,7 @@ class Component extends React.Component {
     // Set which image to display
     setImage = () => {
         if (this.state.circle) {
-            this.setState({image: "/Images/gate_circled.png"});
+            this.setState({image: "/Images/gate-green-circle.svg"});
         } else {
             this.setState({image: "/Images/gate-green.svg"});
         }
@@ -148,7 +160,13 @@ class Component extends React.Component {
 
     render() {
         return (
-            <>
+            <div
+                style={{
+                    position: 'absolute',
+                    left: this.state.x,
+                    top: this.state.y
+                }}
+            >
                 <Figure
                     id={this.props.componentID}
                     ref={this.figureRef}
@@ -166,7 +184,7 @@ class Component extends React.Component {
                     {this.state.caption}
                 </Figure>
                 <Overlay
-                    target={this.figureRef}
+                    target={this.figureImageRef}
                     show={this.state.showSummary}
                     placement="right"
                 >
@@ -185,7 +203,7 @@ class Component extends React.Component {
                     )}
                 </Overlay>
                 <Overlay
-                    target={this.figureRef}
+                    target={this.figureImageRef}
                     show={this.state.showDetailedStatus}
                     placement="bottom"
                 >
@@ -204,7 +222,7 @@ class Component extends React.Component {
                     )}
                 </Overlay>
                 <Overlay
-                    target={this.figureRef}
+                    target={this.figureImageRef}
                     show={this.state.showControl}
                     placement="right"
                 >
@@ -234,7 +252,7 @@ class Component extends React.Component {
                         </Popover>
                     )}
                 </Overlay>
-            </>
+            </div>
         )
     }
 }

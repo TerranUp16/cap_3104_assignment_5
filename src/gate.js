@@ -194,7 +194,13 @@ class Gate extends Component {
 
     render() {
         return (
-            <>
+            <div
+                style={{
+                    position: 'absolute',
+                    left: this.state.x,
+                    top: this.state.y
+                }}
+            >
                 <Figure
                     id={this.props.componentID}
                     ref={this.figureRef}
@@ -212,7 +218,7 @@ class Gate extends Component {
                     {this.state.caption}
                 </Figure>
                 <Overlay
-                    target={this.figureRef}
+                    target={this.figureImageRef}
                     show={this.state.showSummary}
                     placement="right"
                 >
@@ -231,7 +237,7 @@ class Gate extends Component {
                     )}
                 </Overlay>
                 <Overlay
-                    target={this.figureRef}
+                    target={this.figureImageRef}
                     show={this.state.showDetailedStatus}
                     placement="bottom"
                 >
@@ -250,7 +256,7 @@ class Gate extends Component {
                     )}
                 </Overlay>
                 <Overlay
-                    target={this.figureRef}
+                    target={this.figureImageRef}
                     show={this.state.showControl}
                     placement="right"
                 >
@@ -281,7 +287,7 @@ class Gate extends Component {
                         </Popover>
                     )}
                 </Overlay>
-            </>
+            </div>
         );
     }
 }
