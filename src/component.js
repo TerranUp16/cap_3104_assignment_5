@@ -84,6 +84,28 @@ class Component extends React.Component {
         }
     }
 
+    // Handle green circle
+    greenCircle = () => {
+        if (this.state.circle) {
+            return (
+                <img
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        zIndex: 1
+                    }}
+                    src="/Images/green_circle.png"
+                    width={this.state.width}
+                    height={this.state.height}
+                    onMouseOver={() => helper.summary(this)}
+                    onDoubleClick={() => helper.detailedStatus(this)}
+                    onContextMenu={(e) => helper.control(e, this)}
+                />
+            )
+        }
+    }
+
     setCaption = () => {
         if (this.state.showName && this.state.showState && this.state.showStatus) {
             this.setState({
@@ -183,6 +205,7 @@ class Component extends React.Component {
                     />
                     {this.state.caption}
                 </Figure>
+                {this.greenCircle()}
                 <Overlay
                     target={this.figureImageRef}
                     show={this.state.showSummary}

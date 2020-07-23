@@ -240,6 +240,7 @@ class DrawLights extends Component {
                     />
                     {this.state.caption}
                 </Figure>
+                {this.greenCircle()}
                 <Overlay
                     target={this.figureImageRef}
                     show={this.state.showSummary}

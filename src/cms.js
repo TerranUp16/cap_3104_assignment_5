@@ -313,6 +313,7 @@ class CMS extends Component {
                     />
                     {this.state.caption}
                 </Figure>
+                {this.greenCircle()}
                 <Overlay
                     target={this.figureRef}
                     show={this.state.showSummary}
