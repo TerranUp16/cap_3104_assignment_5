@@ -5,6 +5,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Figure from 'react-bootstrap/Figure';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
+import Component from './component';
 import * as helper from './helper';
 
 /*
@@ -26,14 +27,14 @@ NEEDS-
         "Detailed stauts" is on double-left-click
         Control is on right-click
 Props-
-    cctvName: String,
+    name: String,
     cctvShowName: [true, false],
-    cctvState: [on, off],
+    state: [on, off],
     cctvShowState: [true, false],
-    cctvStatus: [operational, no communication, failed],
+    status: [operational, no communication, failed],
     cctvShowStatus: [true, false]
 */
-class CCTV extends React.Component {
+class CCTV extends Component {
     constructor(props) {
         super(props);
 
@@ -43,16 +44,16 @@ class CCTV extends React.Component {
         let status = 'Operational'
 
         // Override defaults based on props
-        if (this.props.hasOwnProperty('cctvName')) {
-            name = this.props.cctvName;
+        if (this.props.hasOwnProperty('name')) {
+            name = this.props.name;
         }
 
-        if (this.props.hasOwnProperty('cctvState')) {
-            state = this.props.cctvState;
+        if (this.props.hasOwnProperty('state')) {
+            state = this.props.state;
         }
 
-        if (this.props.hasOwnProperty('cctvStatus')) {
-            status = this.props.cctvStatus;
+        if (this.props.hasOwnProperty('status')) {
+            status = this.props.status;
         }
 
         // Create references
@@ -61,56 +62,230 @@ class CCTV extends React.Component {
         
         // Set state
         this.state = {
-            cctvName: name,
-            cctvShowName: false,
-            cctvState: state,
-            cctvShowState: false,
-            cctvStatus: status,
-            cctvShowStatus: false,
-            cctvShowSummary: false,
-            cctvShowDetailedStatus: false,
-            cctvShowControl: false,
-            cctvImage: require("./Images/gate.png"),
-            caption: '',
-            circle: false
+            ...this.state,
+            name: name,
+            state: state,
+            status: status,
+            image: "/Images/gate-green.svg"
         }
     }
 
-    // Show/Hide summary
-    summary = (event) => {
-        let show = !this.state.cctvShowSummary;
-        this.setState({
-            cctvShowSummary: show
-        });
+    // Load fresh image status as soon as possible
+    componentDidMount() {
+        this.setImage();
     }
 
-    // Show/Hide detailed status
-    detailedStatus = (event) => {
-        let show = !this.state.cctvShowDetailedStatus;
-
-        let circle = show || this.state.cctvShowControl;
-
-        this.setState({
-            cctvShowDetailedStatus: show,
-            circle: circle
-        }, this.setImage);
+    // Set which image to display
+    setImage = () => {
+        if (this.state.state === 'On' && !this.state.circle && this.state.status === 'Operational') {
+            // On camera painted green
+            this.setState({image: "/Images/gate-green.svg"});
+        } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'Operational') {
+            // On camera painted green with circle
+            this.setState({image: "/Images/gate-green-circle.svg"});
+        } else if (this.state.state === 'On' && !this.state.circle && this.state.status === 'Failed') {
+            // On camera painted red
+            this.setState({image: "/Images/gate-red.svg"});
+        } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'Failed') {
+            // On camera painted red with circle
+            this.setState({image: "/Images/gate-red-circle.svg"});
+        } else if (this.state.state === 'On' && !this.state.circle && this.state.status === 'No Data') {
+            // On camera painted gray
+            this.setState({image: "/Images/gate-gray.svg"});
+        } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'No Data') {
+            // On camera painted gray with circle
+            this.setState({image: "/Images/gate-gray-circle.svg"});
+        } else if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'Operational') {
+            // Off camera painted green
+            this.setState({image: "/Images/gate-green.svg"});
+        } else if (this.state.state === 'Off' && this.state.circle && this.state.status === 'Operational') {
+            // Off camera painted green with circle
+            this.setState({image: "/Images/gate-green-circle.svg"});
+        } else if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'Failed') {
+            // Off camera painted red
+            this.setState({image: "/Images/gate-red.svg"});
+        } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'Failed') {
+            // Off camera painted red with circle
+            this.setState({image: "/Images/gate-red-circle.svg"});
+        } else if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'No Data') {
+            // Off camera painted gray
+            this.setState({image: "/Images/gate-gray.svg"});
+        } else if (this.state.state === 'Off' && this.state.circle && this.state.status === 'No Data') {
+            // Off camera painted gray with circle
+            this.setState({image: "/Images/gate-gray-circle.svg"});
+        }
     }
 
-    // Show/Hide contextual control
-    control = (event) => {
-        event.preventDefault();
-
-        let show = !this.state.cctvShowControl;
-
-        let circle = show || this.state.cctvShowDetailedStatus;
-
-        this.setState({
-            cctvShowControl: show,
-            circle: circle
-        }, this.setImage);
+    setCaption = () => {
+        if (this.state.showName && this.state.showState && this.state.showStatus) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else if (this.state.showName && this.state.showState) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else if (this.state.showName && this.state.showStatus) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else if (this.state.showState && this.state.showStatus) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else if (this.state.showName) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else if (this.state.showState) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else if (this.state.showStatus) {
+            this.setState({
+                caption:
+                    <Figure.Caption>
+                        <ListGroup>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
+                        </ListGroup>
+                    </Figure.Caption>
+            }, this.setImage);
+        } else {
+            this.setState({caption: ''}, this.setImage);
+        }
     }
 
-    
+    render() {
+        return (
+            <div
+                style={{
+                    position: 'absolute',
+                    left: this.state.x,
+                    top: this.state.y
+                }}
+            >
+                <Figure
+                    id={this.props.componentID}
+                    ref={this.figureRef}
+                    onMouseOver={() => helper.summary(this)}
+                    onDoubleClick={() => helper.detailedStatus(this)}
+                    onContextMenu={(e) => helper.control(e, this)}
+                >
+                    <Figure.Image
+                        ref={this.figureImageRef}
+                        height={this.state.height}
+                        width={this.state.width}
+                        alt={`${this.state.name} ${this.state.state}`}
+                        src={this.state.image}
+                    />
+                    {this.state.caption}
+                </Figure>
+                <Overlay
+                    target={this.figureImageRef}
+                    show={this.state.showSummary}
+                    placement="right"
+                >
+                    {(props) => (
+                        <Popover {...props}>
+                            <Popover.Title as="h3">
+                                {`${this.state.name} Summary`}
+                            </Popover.Title>
+                            <Popover.Content>
+                                <ListGroup variant="flush">
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
+                                </ListGroup>
+                            </Popover.Content>
+                        </Popover>
+                    )}
+                </Overlay>
+                <Overlay
+                    target={this.figureImageRef}
+                    show={this.state.showDetailedStatus}
+                    placement="bottom"
+                >
+                    {(props) => (
+                        <Popover {...props}>
+                            <Popover.Title as="h3">
+                                {`${this.state.name} Detailed Status`}
+                            </Popover.Title>
+                            <Popover.Content>
+                                <ListGroup variant="flush">
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
+                                </ListGroup>
+                            </Popover.Content>
+                        </Popover>
+                    )}
+                </Overlay>
+                <Overlay
+                    target={this.figureImageRef}
+                    show={this.state.showControl}
+                    placement="right"
+                >
+                    {(props) => (
+                        <Popover {...props}>
+                            <Popover.Title as="h3">
+                                {`Control ${this.state.name}`}
+                            </Popover.Title>
+                            <Popover.Content>
+                                <Form>
+                                    {helper.addText(this.props.componentID, this, 'name', 'Change Name', this.state.name)}
+                                    {helper.addSelect(this.props.componentID, this, 'state', 'Change State', [
+                                        'On',
+                                        'Off'
+                                    ])}
+                                    {helper.addSelect(this.props.componentID, this, 'status', 'Change Status', [
+                                        'Operational',
+                                        'Failed',
+                                        'No Data'
+                                    ])}
+                                    {helper.addSwitch(this.props.componentID, this, 'showName', 'Show name?')}
+                                    {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
+                                    {helper.addSwitch(this.props.componentID, this, 'showStatus', 'Show status?')}
+                                </Form>
+                            </Popover.Content>
+                        </Popover>
+                    )}
+                </Overlay>
+            </div>
+        );
+    }
 }
 
 export default CCTV;
