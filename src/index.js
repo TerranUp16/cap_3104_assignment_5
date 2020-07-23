@@ -22,6 +22,8 @@ class Highway extends React.Component {
             >
                 <Gate componentID={1} x={530} y={325} name='Farmington Gate' />
                 <Gate componentID={2} x={520} y={50} name='I-84 Gate' />
+                <Popups componentID={3} x={528} y={900} status='Failed' />
+                <CMS componentID={4} x={500} y={650} status='Operational w/Errors' message='Traffic jam, slow down!' />
             </div>
         );
     }

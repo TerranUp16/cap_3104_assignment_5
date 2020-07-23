@@ -55,8 +55,14 @@ class Gate extends Component {
             ...this.state,
             name: name,
             state: state,
-            status: status
+            status: status,
+            image: "/Images/gate-green.svg"
         };
+    }
+
+    // Load fresh image status as soon as possible
+    componentDidMount() {
+        this.setImage();
     }
 
     // Set which image to display
@@ -135,8 +141,8 @@ class Gate extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -145,8 +151,8 @@ class Gate extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -155,8 +161,8 @@ class Gate extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.state}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -165,7 +171,7 @@ class Gate extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -174,7 +180,7 @@ class Gate extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -183,7 +189,7 @@ class Gate extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -229,8 +235,8 @@ class Gate extends Component {
                             </Popover.Title>
                             <Popover.Content>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>{`State: ${this.state.state}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`Status: ${this.state.status}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
                         </Popover>
@@ -248,8 +254,8 @@ class Gate extends Component {
                             </Popover.Title>
                             <Popover.Content>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>{`State: ${this.state.state}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`Status: ${this.state.status}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
                         </Popover>

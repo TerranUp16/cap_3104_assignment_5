@@ -5,6 +5,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Figure from 'react-bootstrap/Figure';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
+import Component from './component';
 import * as helper from './helper';
 
 /*
@@ -22,7 +23,7 @@ import * as helper from './helper';
     3.2.1.2.9.1 If operation of the device is locked out for safety reasons a command option will be “grayed out” and not selectable.
 */
 
-class Popups extends React.Component {
+class Popups extends Component {
     constructor(props) {
         super(props);
 
@@ -30,18 +31,28 @@ class Popups extends React.Component {
         let name = 'Popup Group';
         let state = 'Down' ;
         let status = 'Operational' ;
+        let width = 48;
+        let height = 48;
 
         // Override defaults based on props
-        if (this.props.hasOwnProperty('popupGroupName')) {
-            name = this.props.popupGroupName;
+        if (this.props.hasOwnProperty('name')) {
+            name = this.props.name;
         }
 
-        if (this.props.hasOwnProperty('popupGroupState')) {
-            state = this.props.popupGroupState;
+        if (this.props.hasOwnProperty('state')) {
+            state = this.props.state;
         }
 
-        if (this.props.hasOwnProperty('popupGroupStatus')) {
-            status = this.props.popupGroupStatus;
+        if (this.props.hasOwnProperty('status')) {
+            status = this.props.status;
+        }
+
+        if (this.props.hasOwnProperty('width')) {
+            width = this.props.width;
+        }
+
+        if (this.props.hasOwnProperty('height')) {
+            height = this.props.height;
         }
 
         // Create references
@@ -50,100 +61,54 @@ class Popups extends React.Component {
 
         // Set state
         this.state = {
-            popupGroupName: name,
-            popupGroupShowName: false,
-            popupGroupState: state,
-            popupGroupShowState: false,
-            popupGroupStatus: status,
-            popupGroupShowStatus: false,
-            popupGroupShowSummary: false,
-            popupGroupShowDetailedStatus: false,
-            popupGroupShowControl: false,
-            popupGroupImage: require("./Images/gate.png"),
-            caption: '',
-            circle: false
+            ...this.state,
+            width: width,
+            height: height,
+            name: name,
+            state: state,
+            status: status,
+            image: "/Images/gate-green.svg"
         }
     }
 
-    // Show/Hide summary
-    summary = (event) => {
-        let show = !this.state.popupGroupShowSummary;
-        this.setState({
-            popupGroupShowSummary: show
-        });
-    }
-
-    // Show/Hide detailed status
-    detailedStatus = (event) => {
-        let show = !this.state.popupGroupShowDetailedStatus;
-
-        let circle = show || this.state.popupGroupShowControl;
-
-        this.setState({
-            popupGroupShowDetailedStatus: show,
-            circle: circle
-        }, this.setImage);
-    }
-
-    // Show/Hide contextual control
-    control = (event) => {
-        event.preventDefault();
-
-        let show = !this.state.popupGroupShowControl;
-
-        let circle = show || this.state.popupGroupShowDetailedStatus;
-
-        this.setState({
-            popupGroupShowControl: show,
-            circle: circle
-        }, this.setImage);
+    // Load fresh image status as soon as possible
+    componentDidMount() {
+        this.setImage();
     }
 
     // Set which image to display
     setImage = () => {
-        if (this.state.popupGroupStatus === 'Failed' && !this.state.circle) {
+        if (this.state.status === 'Failed' && !this.state.circle) {
             // If popup group is in a failed state, we need to display the failed state image regardless of whether state is up or down
-            this.setState({popupGroupImage: require("./Images/gate.png")});
-        } else if (this.state.popupGroupStatus === 'Failed' && this.state.circle) {
+            this.setState({image: "/Images/gate-red.svg"});
+        } else if (this.state.status === 'Failed' && this.state.circle) {
             // If popup group is in a failed state, we need to display the failed state image regardless of whether state is up or down (in this case, with circle)
-            this.setState({popupGroupImage: require("./Images/gate_circled.png")});
-        } else if (this.state.popupGroupState === 'Up' && !this.state.circle && this.state.popupGroupStatus === 'Operational') {
+            this.setState({image: "/Images/gate-red-circle.svg"});
+        } else if (this.state.state === 'Up' && !this.state.circle && this.state.status === 'Operational') {
             // Up popup group painted green
-            this.setState({popupGroupImage: require("./Images/gate.png")});
-        } else if (this.state.popupGroupState === 'Up' && this.state.circle && this.state.popupGroupStatus === 'Operational') {
+            this.setState({image: "/Images/gate-green.svg"});
+        } else if (this.state.state === 'Up' && this.state.circle && this.state.status === 'Operational') {
             // Up popup group painted green with circle
-            this.setState({popupGroupImage: require("./Images/gate_circled.png")});
-        } else if (this.state.popupGroupState === 'Up' && !this.state.circle && this.state.popupGroupStatus === 'No Data') {
+            this.setState({image: "/Images/gate-green-circle.svg"});
+        } else if (this.state.state === 'Up' && !this.state.circle && this.state.status === 'No Data') {
             // Up popup group painted gray
-            this.setState({popupGroupImage: require("./Images/gate.png")});
-        } else if (this.state.popupGroupState === 'Up' && this.state.circle && this.state.popupGroupStatus === 'No Data') {
+            this.setState({image: "/Images/gate-gray.svg"});
+        } else if (this.state.state === 'Up' && this.state.circle && this.state.status === 'No Data') {
             // Up popup group painted gray with circle
-            this.setState({popupGroupImage: require("./Images/gate_circled.png")});
-        } else if (this.state.popupGroupState === 'Down' && !this.state.circle && this.state.popupGroupStatus === 'Operational') {
+            this.setState({image: "/Images/gate-gray-circle.svg"});
+        } else if (this.state.state === 'Down' && !this.state.circle && this.state.status === 'Operational') {
             // Down popup group painted green
-            this.setState({popupGroupImage: require("./Images/gate.png")});
-        } else if (this.state.popupGroupState === 'Down' && this.state.circle && this.state.popupGroupStatus === 'Operational') {
+            this.setState({image: "/Images/gate-green.svg"});
+        } else if (this.state.state === 'Down' && this.state.circle && this.state.status === 'Operational') {
             // Down popup group painted green with circle
-            this.setState({popupGroupImage: require("./Images/gate_circled.png")});
-        } else if (this.state.popupGroupState === 'Down' && !this.state.circle && this.state.popupGroupStatus === 'No Data') {
+            this.setState({image: "/Images/gate-green-circle.svg"});
+        } else if (this.state.state === 'Down' && !this.state.circle && this.state.status === 'No Data') {
             // Down popup group painted gray
-            this.setState({popupGroupImage: require("./Images/gate.png")});
-        } else if (this.state.popupGroupState === 'Down' && this.state.circle && this.state.popupGroupStatus === 'No Data') {
+            this.setState({image: "/Images/gate-gray.svg"});
+        } else if (this.state.state === 'Down' && this.state.circle && this.state.status === 'No Data') {
             // Down popup group painted gray with circle
-            this.setState({popupGroupImage: require("./Images/gate_circled.png")});
+            this.setState({image: "/Images/gate-gray-circle.svg"});
         }
-    }
-
-    changeHandler = (event) => {
-        let nam = event.target.name;
-        let val = event.target.value;
-        this.setState({[nam]: val}, this.setCaption);
-    }
-
-    switchHandler = (event) => {
-        let nam = event.target.name;
-        let newState = !this.state[nam];
-        this.setState({[nam]: newState}, this.setCaption);
     }
 
     setCaption = () => {
@@ -152,9 +117,9 @@ class Popups extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-1">{`Name: ${this.state.popupGroupName}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`State: ${this.state.popupGroupState}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`Status: ${this.state.popupGroupStatus}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -163,8 +128,8 @@ class Popups extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.popupGroupName}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.popupGroupState}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -173,8 +138,8 @@ class Popups extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.popupGroupName}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Status: ${this.state.popupGroupStatus}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -183,8 +148,8 @@ class Popups extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.popupGroupState}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Status: ${this.state.popupGroupStatus}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -193,7 +158,7 @@ class Popups extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Name: ${this.state.popupGroupName}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -202,7 +167,7 @@ class Popups extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`State: ${this.state.popupGroupState}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -211,7 +176,7 @@ class Popups extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Status: ${this.state.popupGroupStatus}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -220,198 +185,101 @@ class Popups extends React.Component {
         }
     }
 
-    nameSwitch = () => {
-        if (this.state.popupGroupShowName === true) {
-            return (
-                <Form.Check
-                    type="switch"
-                    id={`${this.props.popupGroupID}-ShowName`}
-                    name="popupGroupShowName"
-                    label="Show name?"
-                    onChange={this.switchHandler}
-                    custom
-                    checked
-                />
-            );
-        } else {
-            return (
-                <Form.Check
-                    type="switch"
-                    id={`${this.props.popupGroupID}-ShowName`}
-                    name="popupGroupShowName"
-                    label="Show name?"
-                    onChange={this.switchHandler}
-                    custom
-                />
-            );
-        }
-    }
-
-    stateSwitch = () => {
-        if (this.state.popupGroupShowState === true) {
-            return (
-                <Form.Check
-                    type="switch"
-                    id={`${this.props.popupGroupID}-ShowState`}
-                    name="popupGroupShowState"
-                    label="Show state?"
-                    onChange={this.switchHandler}
-                    custom
-                    checked
-                />
-            );
-        } else {
-            return (
-                <Form.Check
-                    type="switch"
-                    id={`${this.props.popupGroupID}-ShowState`}
-                    name="popupGroupShowState"
-                    label="Show state?"
-                    onChange={this.switchHandler}
-                    custom
-                />
-            );
-        }
-    }
-
-    statusSwitch = () => {
-        if (this.state.popupGroupShowStatus === true) {
-            return (
-                <Form.Check
-                    type="switch"
-                    id={`${this.props.popupGroupID}-ShowStatus`}
-                    name="popupGroupShowStatus"
-                    label="Show status?"
-                    onChange={this.switchHandler}
-                    custom
-                    checked
-                />
-            );
-        } else {
-            return (
-                <Form.Check
-                    type="switch"
-                    id={`${this.props.popupGroupID}-ShowStatus`}
-                    name="popupGroupShowStatus"
-                    label="Show status?"
-                    onChange={this.switchHandler}
-                    custom
-                />
-            );
-        }
-    }
-
     render() {
         return (
-            <>
+            <div
+                style={{
+                    position: 'absolute',
+                    left: this.state.x,
+                    top: this.state.y
+                }}
+            >
                 <Figure
-                    id={this.props.popupGroupID}
+                    id={this.props.componentID}
                     ref={this.figureRef}
-                    onMouseOver={this.summary}
-                    onDoubleClick={this.detailedStatus}
-                    onContextMenu={this.control}
+                    onMouseOver={() => helper.summary(this)}
+                    onDoubleClick={() => helper.detailedStatus(this)}
+                    onContextMenu={(e) => helper.control(e, this)}
                 >
                     <Figure.Image
                         ref={this.figureImageRef}
-                        height={50}
-                        alt={`${this.state.popupGroupName} ${this.state.popupGroupState}`}
-                        src={this.state.popupGroupImage}
+                        height={this.state.height}
+                        width={this.state.width}
+                        alt={`${this.state.name} ${this.state.state}`}
+                        src={this.state.image}
                     />
                     {this.state.caption}
                 </Figure>
                 <Overlay
-                    target={this.figureRef}
-                    show={this.state.popupGroupShowSummary}
+                    target={this.figureImageRef}
+                    show={this.state.showSummary}
                     placement="right"
                 >
                     {(props) => (
                         <Popover {...props}>
                             <Popover.Title as="h3">
-                                {`${this.state.popupGroupName} Summary`}
+                                {`${this.state.name} Summary`}
                             </Popover.Title>
                             <Popover.Content>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>{`State: ${this.state.popupGroupState}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`Status: ${this.state.popupGroupStatus}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
                         </Popover>
                     )}
                 </Overlay>
                 <Overlay
-                    target={this.figureRef}
-                    show={this.state.popupGroupShowDetailedStatus}
+                    target={this.figureImageRef}
+                    show={this.state.showDetailedStatus}
                     placement="bottom"
                 >
                     {(props) => (
                         <Popover {...props}>
                             <Popover.Title as="h3">
-                                {`${this.state.popupGroupName} Detailed Status`}
+                                {`${this.state.name} Detailed Status`}
                             </Popover.Title>
                             <Popover.Content>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>{`State: ${this.state.popupGroupState}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`Status: ${this.state.popupGroupStatus}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
                         </Popover>
                     )}
                 </Overlay>
                 <Overlay
-                    target={this.figureRef}
-                    show={this.state.popupGroupShowControl}
+                    target={this.figureImageRef}
+                    show={this.state.showControl}
                     placement="right"
                 >
                     {(props) => (
                         <Popover {...props}>
                             <Popover.Title as="h3">
-                                {`Control ${this.state.popupGroupName}`}
+                                {`Control ${this.state.name}`}
                             </Popover.Title>
                             <Popover.Content>
                                 <Form>
-                                    <Form.Group controlId={`${this.props.popupGroupID}-Name`}>
-                                        <Form.Label>Change Name</Form.Label>
-                                        <Form.Control
-                                            type="text"
-                                            name="popupGroupName"
-                                            placeholder={this.state.popupGroupName}
-                                            onChange={this.changeHandler}
-                                        />
-                                    </Form.Group>
-                                    <Form.Group controlId={`${this.props.popupGroupID}-State`}>
-                                        <Form.Label>Change State</Form.Label>
-                                        <Form.Control
-                                            as="select"
-                                            name="popupGroupState"
-                                            custom
-                                            onChange={this.changeHandler}
-                                        >
-                                            {helper.selectedOption(this.state.popupGroupState, 'Down')}
-                                            {helper.selectedOption(this.state.popupGroupState, 'Up')}
-                                        </Form.Control>
-                                    </Form.Group>
-                                    <Form.Group controlId={`${this.props.popupGroupID}-Status`}>
-                                        <Form.Label>Change Status</Form.Label>
-                                        <Form.Control
-                                            as="select"
-                                            name="popupGroupStatus"
-                                            custom
-                                            onChange={this.changeHandler}
-                                        >
-                                            {helper.selectedOption(this.state.popupGroupStatus, 'Operational')}
-                                            {helper.selectedOption(this.state.popupGroupStatus, 'Failed')}
-                                            {helper.selectedOption(this.state.popupGroupStatus, 'No Data')}
-                                        </Form.Control>
-                                    </Form.Group>
-                                    {this.nameSwitch()}
-                                    {this.stateSwitch()}
-                                    {this.statusSwitch()}
+                                    {helper.addText(this.props.componentID, this, 'name', 'Change Name', this.state.name)}
+                                    {helper.addSelect(this.props.componentID, this, 'state', 'Change State', [
+                                        'Down',
+                                        'Up'
+                                    ])}
+                                    {helper.addSelect(this.props.componentID, this, 'status', 'Change Status', [
+                                        'Operational',
+                                        'Failed',
+                                        'No Data'
+                                    ])}
+                                    {helper.addSwitch(this.props.componentID, this, 'showName', 'Show name?')}
+                                    {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
+                                    {helper.addSwitch(this.props.componentID, this, 'showStatus', 'Show status?')}
+                                    {helper.addSwitch(this.props.componentID, this, 'safetyLock', 'Enable safety lock')}
                                 </Form>
                             </Popover.Content>
                         </Popover>
                     )}
                 </Overlay>
-            </>
+            </div>
         );
     }
 }

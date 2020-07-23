@@ -64,6 +64,11 @@ class CMS extends Component {
         };
     }
 
+    // Load fresh image status as soon as possible
+    componentDidMount() {
+        this.setImage();
+    }
+
     // Set which image to display
     setImage = () => {
         if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'Operational') {
@@ -71,49 +76,49 @@ class CMS extends Component {
             this.setState({image: "/Images/gate-green.svg"});
         } else if (this.state.state === 'Off' && this.state.circle && this.state.status === 'Operational') {
             // No message CMS painted green with circle
-            this.setState({image: "./Images/gate_circled.png"});
+            this.setState({image: "/Images/gate-green-circle.svg"});
         } else if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'Operational w/Errors') {
             // No message CMS painted yellow
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-yellow.svg"});
         } else if (this.state.state === 'Off' && this.state.circle && this.state.status === 'Operational w/Errors') {
             // No message CMS painted yellow with circle
-            this.setState({image: "./Images/gate_circled.png"});
+            this.setState({image: "/Images/gate-yellow-circle.svg"});
         } else if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'No Communication') {
             // No message CMS painted gray
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-gray.svg"});
         } else if (this.state.state === 'Off' && this.state.circle && this.state.status === 'No Communication') {
             // No message CMS painted gray with circle
-            this.setState({image: "./Images/gate_circled.png"});
+            this.setState({image: "/Images/gate-gray-circle.svg"});
         } else if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'Failed') {
             // No message CMS painted red
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-red.svg"});
         } else if (this.state.state === 'Off' && this.state.circle && this.state.status === 'Failed') {
             // No message CMS painted red with circle
-            this.setState({image: "./Images/gate_circled.png"});
+            this.setState({image: "/Images/gate-red-circle.svg"});
         } else if (this.state.state === 'On' && !this.state.circle && this.state.status === 'Operational') {
             // Message CMS painted green
             this.setState({image: "/Images/gate-green.svg"});
         } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'Operational') {
             // Message CMS painted green with circle
-            this.setState({image: "./Images/gate_circled.png"});
+            this.setState({image: "/Images/gate-green-circle.svg"});
         } else if (this.state.state === 'On' && !this.state.circle && this.state.status === 'Operational w/Errors') {
             // Message CMS painted yellow
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-yellow.svg"});
         } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'Operational w/Errors') {
             // Message CMS painted yellow with circle
-            this.setState({image: "./Images/gate_circled.png"});
+            this.setState({image: "/Images/gate-yellow-circle.svg"});
         } else if (this.state.state === 'On' && !this.state.circle && this.state.status === 'No Communication') {
             // Message CMS painted gray
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-gray.svg"});
         } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'No Communication') {
             // Message CMS painted gray with circle
-            this.setState({image: "./Images/gate_circled.png"});
+            this.setState({image: "/Images/gate-gray-circle.svg"});
         } else if (this.state.state === 'On' && !this.state.circle && this.state.status === 'Failed') {
             // Message CMS painted red
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-red.svg"});
         } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'Failed') {
             // Message CMS painted red with circle
-            this.setState({image: "./Images/gate_circled.png"});
+            this.setState({image: "/Images/gate-red-circle.svg"});
         }
     }
 
@@ -135,9 +140,9 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Message: ${this.state.message}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Message: ${this.state.message}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -146,9 +151,9 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Message: ${this.state.message}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Message: ${this.state.message}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -157,9 +162,9 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.state}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -168,9 +173,9 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`Message: ${this.state.message}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.state}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Message: ${this.state.message}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -179,8 +184,8 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-3">{`Message: ${this.state.message}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Message: ${this.state.message}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -189,8 +194,8 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-3">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -199,8 +204,8 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-3">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -209,8 +214,8 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Message: ${this.state.message}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-3">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Message: ${this.state.message}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -219,8 +224,8 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Message: ${this.state.message}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-3">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Message: ${this.state.message}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -229,8 +234,8 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`State: ${this.state.state}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-3">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -239,7 +244,7 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-4">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -248,7 +253,7 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-4">{`Message: ${this.state.message}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Message: ${this.state.message}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -257,7 +262,7 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-4">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -266,7 +271,7 @@ class CMS extends Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-4">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -278,14 +283,20 @@ class CMS extends Component {
     messageOn = () => {
         if (this.state.state === 'On') {
             return (
-                <ListGroup.Item>{`Message: ${this.state.message}`}</ListGroup.Item>
+                <ListGroup.Item className="py-1">{`Message: ${this.state.message}`}</ListGroup.Item>
             )
         }
     }
 
     render() {
         return (
-            <>
+            <div
+                style={{
+                    position: 'absolute',
+                    left: this.state.x,
+                    top: this.state.y
+                }}
+            >
                 <Figure
                     id={this.props.componentID}
                     ref={this.figureRef}
@@ -295,8 +306,8 @@ class CMS extends Component {
                 >
                     <Figure.Image
                         ref={this.figureImageRef}
-                        height={128}
-                        width={128}
+                        height={this.state.height}
+                        width={this.state.width}
                         alt={`${this.state.name} ${this.state.state}`}
                         src={this.state.image}
                     />
@@ -315,8 +326,8 @@ class CMS extends Component {
                             <Popover.Content>
                                 <ListGroup variant="flush">
                                     {this.messageOn()}
-                                    <ListGroup.Item>{`State: ${this.state.state}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`Status: ${this.state.status}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
                         </Popover>
@@ -334,9 +345,9 @@ class CMS extends Component {
                             </Popover.Title>
                             <Popover.Content>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>{`Message: ${this.state.message}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`State: ${this.state.state}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`Status: ${this.state.status}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Message: ${this.state.message}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
                         </Popover>
@@ -376,7 +387,7 @@ class CMS extends Component {
                         </Popover>
                     )}
                 </Overlay>
-            </>
+            </div>
         );
     }
 }

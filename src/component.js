@@ -101,8 +101,8 @@ class Component extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -111,8 +111,8 @@ class Component extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -121,8 +121,8 @@ class Component extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.state}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -131,7 +131,7 @@ class Component extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -140,7 +140,7 @@ class Component extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -149,7 +149,7 @@ class Component extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -195,8 +195,8 @@ class Component extends React.Component {
                             </Popover.Title>
                             <Popover.Content>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>{`State: ${this.state.state}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`Status: ${this.state.status}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
                         </Popover>
@@ -214,8 +214,8 @@ class Component extends React.Component {
                             </Popover.Title>
                             <Popover.Content>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>{`State: ${this.state.state}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`Status: ${this.state.status}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
                         </Popover>
