@@ -27,7 +27,7 @@ class CCTV extends Component {
         // Set defaults
         let name = 'Camera';
         let state = 'On';
-        let status = 'Operational'
+        let status = 'Operational';
 
         // Override defaults based on props
         if (this.props.hasOwnProperty('name')) {

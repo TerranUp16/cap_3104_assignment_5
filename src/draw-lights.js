@@ -30,7 +30,7 @@ class DrawLights extends Component {
         // Set defaults
         let name = 'Draw Lights';
         let state = 'Off' ;
-        let status = 'Operational' ;
+        let status = 'Operational';
 
         // Override defaults based on props
         if (this.props.hasOwnProperty('name')) {

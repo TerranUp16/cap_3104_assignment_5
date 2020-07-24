@@ -6,6 +6,9 @@ import CMS from './cms';
 import CCTV from './cctv';
 import DrawLights from './draw-lights';
 import WrongWayLights from './wrong-way-lights';
+import FCU from './fcu';
+import HOV from './hov';
+import Incident from './incident';
 import Component from './component';
 
 class Highway extends React.Component {
@@ -30,6 +33,9 @@ class Highway extends React.Component {
                 <CCTV componentID={5} x={522} y={1100} status='No Data' />
                 <DrawLights componentID={6} x={522} y={1000} state='Partially On' />
                 <WrongWayLights componentID={7} x={525} y={825} status='Operational w/Errors' />
+                <FCU componentID={8} x={525} y={1400} status='Failed' />
+                <HOV componentID={9} x={515} y={125} state='Open Southbound' />
+                <Incident componentID={10} x={535} y={1250} state='New' />
             </div>
         );
     }
