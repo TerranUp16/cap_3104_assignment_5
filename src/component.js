@@ -97,7 +97,7 @@ class Component extends React.Component {
                         top: 0,
                         zIndex: 1
                     }}
-                    src="/Images/green_circle.png"
+                    src="/Images/green-circle.svg"
                     width={this.state.width}
                     height={this.state.height}
                     onMouseOver={() => helper.summary(this)}
