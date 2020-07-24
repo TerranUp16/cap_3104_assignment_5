@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Figure from 'react-bootstrap/Figure';
 import Overlay from 'react-bootstrap/Overlay';
+import Button from 'react-bootstrap/Button';
 import Popover from 'react-bootstrap/Popover';
 import * as helper from './helper';
 
@@ -75,13 +76,14 @@ class Component extends React.Component {
         }
     }
 
+    // Load fresh image status as soon as possible
+    componentDidMount() {
+        this.setImage();
+    }
+
     // Set which image to display
     setImage = () => {
-        if (this.state.circle) {
-            this.setState({image: "/Images/gate-green-circle.svg"});
-        } else {
-            this.setState({image: "/Images/gate-green.svg"});
-        }
+        this.setState({image: "/Images/gate-green.svg"});
     }
 
     // Handle green circle
@@ -99,6 +101,7 @@ class Component extends React.Component {
                     width={this.state.width}
                     height={this.state.height}
                     onMouseOver={() => helper.summary(this)}
+                    onMouseOut={() => helper.summary(this)}
                     onDoubleClick={() => helper.detailedStatus(this)}
                     onContextMenu={(e) => helper.control(e, this)}
                 />
@@ -106,6 +109,7 @@ class Component extends React.Component {
         }
     }
 
+    // Adds persistent-display text below component
     setCaption = () => {
         if (this.state.showName && this.state.showState && this.state.showStatus) {
             this.setState({
@@ -193,6 +197,7 @@ class Component extends React.Component {
                     id={this.props.componentID}
                     ref={this.figureRef}
                     onMouseOver={() => helper.summary(this)}
+                    onMouseOut={() => helper.summary(this)}
                     onDoubleClick={() => helper.detailedStatus(this)}
                     onContextMenu={(e) => helper.control(e, this)}
                 >
@@ -270,6 +275,7 @@ class Component extends React.Component {
                                     {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
                                     {helper.addSwitch(this.props.componentID, this, 'showStatus', 'Show status?')}
                                     {helper.addSwitch(this.props.componentID, this, 'safetyLock', 'Enable safety lock')}
+                                    {helper.addOkayButton(this)}
                                 </Form>
                             </Popover.Content>
                         </Popover>

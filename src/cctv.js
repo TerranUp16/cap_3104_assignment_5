@@ -56,123 +56,26 @@ class CCTV extends Component {
         }
     }
 
-    // Load fresh image status as soon as possible
-    componentDidMount() {
-        this.setImage();
-    }
-
     // Set which image to display
     setImage = () => {
-        if (this.state.state === 'On' && !this.state.circle && this.state.status === 'Operational') {
+        if (this.state.state === 'On' && this.state.status === 'Operational') {
             // On camera painted green
             this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'Operational') {
-            // On camera painted green with circle
-            this.setState({image: "/Images/gate-green-circle.svg"});
-        } else if (this.state.state === 'On' && !this.state.circle && this.state.status === 'Failed') {
+        } else if (this.state.state === 'On' && this.state.status === 'Failed') {
             // On camera painted red
             this.setState({image: "/Images/gate-red.svg"});
-        } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'Failed') {
-            // On camera painted red with circle
-            this.setState({image: "/Images/gate-red-circle.svg"});
-        } else if (this.state.state === 'On' && !this.state.circle && this.state.status === 'No Data') {
+        } else if (this.state.state === 'On' && this.state.status === 'No Data') {
             // On camera painted gray
             this.setState({image: "/Images/gate-gray.svg"});
-        } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'No Data') {
-            // On camera painted gray with circle
-            this.setState({image: "/Images/gate-gray-circle.svg"});
-        } else if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'Operational') {
+        } else if (this.state.state === 'Off' && this.state.status === 'Operational') {
             // Off camera painted green
             this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Off' && this.state.circle && this.state.status === 'Operational') {
-            // Off camera painted green with circle
-            this.setState({image: "/Images/gate-green-circle.svg"});
-        } else if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'Failed') {
+        } else if (this.state.state === 'Off' && this.state.status === 'Failed') {
             // Off camera painted red
             this.setState({image: "/Images/gate-red.svg"});
-        } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'Failed') {
-            // Off camera painted red with circle
-            this.setState({image: "/Images/gate-red-circle.svg"});
-        } else if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'No Data') {
+        } else if (this.state.state === 'Off' && this.state.status === 'No Data') {
             // Off camera painted gray
             this.setState({image: "/Images/gate-gray.svg"});
-        } else if (this.state.state === 'Off' && this.state.circle && this.state.status === 'No Data') {
-            // Off camera painted gray with circle
-            this.setState({image: "/Images/gate-gray-circle.svg"});
-        }
-    }
-
-    setCaption = () => {
-        if (this.state.showName && this.state.showState && this.state.showStatus) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showName && this.state.showState) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showName && this.state.showStatus) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showState && this.state.showStatus) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showName) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showState) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showStatus) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else {
-            this.setState({caption: ''}, this.setImage);
         }
     }
 
@@ -189,6 +92,7 @@ class CCTV extends Component {
                     id={this.props.componentID}
                     ref={this.figureRef}
                     onMouseOver={() => helper.summary(this)}
+                    onMouseOut={() => helper.summary(this)}
                     onDoubleClick={() => helper.detailedStatus(this)}
                     onContextMenu={(e) => helper.control(e, this)}
                 >
@@ -265,6 +169,7 @@ class CCTV extends Component {
                                     {helper.addSwitch(this.props.componentID, this, 'showName', 'Show name?')}
                                     {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
                                     {helper.addSwitch(this.props.componentID, this, 'showStatus', 'Show status?')}
+                                    {helper.addOkayButton(this)}
                                 </Form>
                             </Popover.Content>
                         </Popover>

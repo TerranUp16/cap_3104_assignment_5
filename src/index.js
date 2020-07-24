@@ -5,6 +5,7 @@ import Popups from './popups';
 import CMS from './cms';
 import CCTV from './cctv';
 import DrawLights from './draw-lights';
+import WrongWayLights from './wrong-way-lights';
 import Component from './component';
 
 class Highway extends React.Component {
@@ -28,6 +29,7 @@ class Highway extends React.Component {
                 <CMS componentID={4} x={500} y={650} status='Operational w/Errors' message='Traffic jam, slow down!' />
                 <CCTV componentID={5} x={522} y={1100} status='No Data' />
                 <DrawLights componentID={6} x={522} y={1000} state='Partially On' />
+                <WrongWayLights componentID={7} x={525} y={825} status='Operational w/Errors' />
             </div>
         );
     }

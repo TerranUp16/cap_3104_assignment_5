@@ -71,117 +71,23 @@ class Popups extends Component {
         }
     }
 
-    // Load fresh image status as soon as possible
-    componentDidMount() {
-        this.setImage();
-    }
-
     // Set which image to display
     setImage = () => {
-        if (this.state.status === 'Failed' && !this.state.circle) {
+        if (this.state.status === 'Failed') {
             // If popup group is in a failed state, we need to display the failed state image regardless of whether state is up or down
             this.setState({image: "/Images/gate-red.svg"});
-        } else if (this.state.status === 'Failed' && this.state.circle) {
-            // If popup group is in a failed state, we need to display the failed state image regardless of whether state is up or down (in this case, with circle)
-            this.setState({image: "/Images/gate-red-circle.svg"});
-        } else if (this.state.state === 'Up' && !this.state.circle && this.state.status === 'Operational') {
+        } else if (this.state.state === 'Up' && this.state.status === 'Operational') {
             // Up popup group painted green
             this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Up' && this.state.circle && this.state.status === 'Operational') {
-            // Up popup group painted green with circle
-            this.setState({image: "/Images/gate-green-circle.svg"});
-        } else if (this.state.state === 'Up' && !this.state.circle && this.state.status === 'No Data') {
+        } else if (this.state.state === 'Up' && this.state.status === 'No Data') {
             // Up popup group painted gray
             this.setState({image: "/Images/gate-gray.svg"});
-        } else if (this.state.state === 'Up' && this.state.circle && this.state.status === 'No Data') {
-            // Up popup group painted gray with circle
-            this.setState({image: "/Images/gate-gray-circle.svg"});
-        } else if (this.state.state === 'Down' && !this.state.circle && this.state.status === 'Operational') {
+        } else if (this.state.state === 'Down' && this.state.status === 'Operational') {
             // Down popup group painted green
             this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Down' && this.state.circle && this.state.status === 'Operational') {
-            // Down popup group painted green with circle
-            this.setState({image: "/Images/gate-green-circle.svg"});
-        } else if (this.state.state === 'Down' && !this.state.circle && this.state.status === 'No Data') {
+        } else if (this.state.state === 'Down' && this.state.status === 'No Data') {
             // Down popup group painted gray
             this.setState({image: "/Images/gate-gray.svg"});
-        } else if (this.state.state === 'Down' && this.state.circle && this.state.status === 'No Data') {
-            // Down popup group painted gray with circle
-            this.setState({image: "/Images/gate-gray-circle.svg"});
-        }
-    }
-
-    setCaption = () => {
-        if (this.state.showName && this.state.showState && this.state.showStatus) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showName && this.state.showState) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showName && this.state.showStatus) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showState && this.state.showStatus) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showName) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showState) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showStatus) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else {
-            this.setState({caption: ''}, this.setImage);
         }
     }
 
@@ -198,6 +104,7 @@ class Popups extends Component {
                     id={this.props.componentID}
                     ref={this.figureRef}
                     onMouseOver={() => helper.summary(this)}
+                    onMouseOut={() => helper.summary(this)}
                     onDoubleClick={() => helper.detailedStatus(this)}
                     onContextMenu={(e) => helper.control(e, this)}
                 >
@@ -275,6 +182,7 @@ class Popups extends Component {
                                     {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
                                     {helper.addSwitch(this.props.componentID, this, 'showStatus', 'Show status?')}
                                     {helper.addSwitch(this.props.componentID, this, 'safetyLock', 'Enable safety lock')}
+                                    {helper.addOkayButton(this)}
                                 </Form>
                             </Popover.Content>
                         </Popover>

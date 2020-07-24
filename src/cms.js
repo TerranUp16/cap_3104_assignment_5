@@ -64,61 +64,32 @@ class CMS extends Component {
         };
     }
 
-    // Load fresh image status as soon as possible
-    componentDidMount() {
-        this.setImage();
-    }
-
     // Set which image to display
     setImage = () => {
-        if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'Operational') {
+        if (this.state.state === 'Off' && this.state.status === 'Operational') {
             // No message CMS painted green
             this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Off' && this.state.circle && this.state.status === 'Operational') {
-            // No message CMS painted green with circle
-            this.setState({image: "/Images/gate-green-circle.svg"});
-        } else if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'Operational w/Errors') {
+        } else if (this.state.state === 'Off' && this.state.status === 'Operational w/Errors') {
             // No message CMS painted yellow
             this.setState({image: "/Images/gate-yellow.svg"});
-        } else if (this.state.state === 'Off' && this.state.circle && this.state.status === 'Operational w/Errors') {
-            // No message CMS painted yellow with circle
-            this.setState({image: "/Images/gate-yellow-circle.svg"});
-        } else if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'No Communication') {
+        } else if (this.state.state === 'Off' && this.state.status === 'No Communication') {
             // No message CMS painted gray
             this.setState({image: "/Images/gate-gray.svg"});
-        } else if (this.state.state === 'Off' && this.state.circle && this.state.status === 'No Communication') {
-            // No message CMS painted gray with circle
-            this.setState({image: "/Images/gate-gray-circle.svg"});
-        } else if (this.state.state === 'Off' && !this.state.circle && this.state.status === 'Failed') {
+        } else if (this.state.state === 'Off' && this.state.status === 'Failed') {
             // No message CMS painted red
             this.setState({image: "/Images/gate-red.svg"});
-        } else if (this.state.state === 'Off' && this.state.circle && this.state.status === 'Failed') {
-            // No message CMS painted red with circle
-            this.setState({image: "/Images/gate-red-circle.svg"});
-        } else if (this.state.state === 'On' && !this.state.circle && this.state.status === 'Operational') {
+        } else if (this.state.state === 'On' && this.state.status === 'Operational') {
             // Message CMS painted green
             this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'Operational') {
-            // Message CMS painted green with circle
-            this.setState({image: "/Images/gate-green-circle.svg"});
-        } else if (this.state.state === 'On' && !this.state.circle && this.state.status === 'Operational w/Errors') {
+        } else if (this.state.state === 'On' && this.state.status === 'Operational w/Errors') {
             // Message CMS painted yellow
             this.setState({image: "/Images/gate-yellow.svg"});
-        } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'Operational w/Errors') {
-            // Message CMS painted yellow with circle
-            this.setState({image: "/Images/gate-yellow-circle.svg"});
-        } else if (this.state.state === 'On' && !this.state.circle && this.state.status === 'No Communication') {
+        } else if (this.state.state === 'On' && this.state.status === 'No Communication') {
             // Message CMS painted gray
             this.setState({image: "/Images/gate-gray.svg"});
-        } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'No Communication') {
-            // Message CMS painted gray with circle
-            this.setState({image: "/Images/gate-gray-circle.svg"});
-        } else if (this.state.state === 'On' && !this.state.circle && this.state.status === 'Failed') {
+        } else if (this.state.state === 'On' && this.state.status === 'Failed') {
             // Message CMS painted red
             this.setState({image: "/Images/gate-red.svg"});
-        } else if (this.state.state === 'On' && this.state.circle && this.state.status === 'Failed') {
-            // Message CMS painted red with circle
-            this.setState({image: "/Images/gate-red-circle.svg"});
         }
     }
 
@@ -301,6 +272,7 @@ class CMS extends Component {
                     id={this.props.componentID}
                     ref={this.figureRef}
                     onMouseOver={() => helper.summary(this)}
+                    onMouseOut={() => helper.summary(this)}
                     onDoubleClick={() => helper.detailedStatus(this)}
                     onContextMenu={(e) => helper.control(e, this)}
                 >
@@ -383,6 +355,7 @@ class CMS extends Component {
                                     {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
                                     {helper.addSwitch(this.props.componentID, this, 'showStatus', 'Show status?')}
                                     {helper.addSwitch(this.props.componentID, this, 'safetyLock', 'Enable safety lock')}
+                                    {helper.addOkayButton(this)}
                                 </Form>
                             </Popover.Content>
                         </Popover>

@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export const selectedOption = (curValue, optionValue) => {
     if (curValue === optionValue) {
@@ -158,4 +159,19 @@ export const addSwitch = (id, component, name, label) => {
             />
         );
     }
+}
+
+export const addOkayButton = (component) => {
+    return (
+        <Button
+            variant="primary"
+            block
+            onClick={(e) => control(e, component)}
+            style={{
+                marginTop: 1 + 'em'
+            }}
+        >
+            Okay
+        </Button>
+    )
 }
