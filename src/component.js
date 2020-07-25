@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Figure from 'react-bootstrap/Figure';
 import Overlay from 'react-bootstrap/Overlay';
+import Button from 'react-bootstrap/Button';
 import Popover from 'react-bootstrap/Popover';
 import * as helper from './helper';
 
@@ -15,8 +16,10 @@ class Component extends React.Component {
         let name = 'Component';
         let state = 'On';
         let status = 'Operational';
-        let width = 128;
-        let height = 128;
+        let width = 64;
+        let height = 64;
+        let x = 0;
+        let y = 0;
 
         // Override defaults based on props
         if (this.props.hasOwnProperty('name')) {
@@ -39,6 +42,14 @@ class Component extends React.Component {
             height = this.props.height;
         }
 
+        if (this.props.hasOwnProperty('x')) {
+            x = this.props.x;
+        }
+
+        if (this.props.hasOwnProperty('y')) {
+            y = this.props.y;
+        }
+
         // Create references
         this.figureRef = React.createRef();
         this.figureImageref = React.createRef();
@@ -47,6 +58,8 @@ class Component extends React.Component {
         this.state = {
             width: width,
             height: height,
+            x: x,
+            y: y,
             name: name,
             showName: false,
             state: state,
@@ -63,15 +76,40 @@ class Component extends React.Component {
         }
     }
 
+    // Load fresh image status as soon as possible
+    componentDidMount() {
+        this.setImage();
+    }
+
     // Set which image to display
     setImage = () => {
+        this.setState({image: "/Images/gate-green.svg"});
+    }
+
+    // Handle green circle
+    greenCircle = () => {
         if (this.state.circle) {
-            this.setState({image: "/Images/gate_circled.png"});
-        } else {
-            this.setState({image: "/Images/gate-green.svg"});
+            return (
+                <img
+                    style={{
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        zIndex: 1
+                    }}
+                    src="/Images/green-circle.svg"
+                    width={this.state.width}
+                    height={this.state.height}
+                    onMouseOver={() => helper.summary(this)}
+                    onMouseOut={() => helper.summary(this)}
+                    onDoubleClick={() => helper.detailedStatus(this)}
+                    onContextMenu={(e) => helper.control(e, this)}
+                />
+            )
         }
     }
 
+    // Adds persistent-display text below component
     setCaption = () => {
         if (this.state.showName && this.state.showState && this.state.showStatus) {
             this.setState({
@@ -89,8 +127,8 @@ class Component extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -99,8 +137,8 @@ class Component extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -109,8 +147,8 @@ class Component extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.state}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -119,7 +157,7 @@ class Component extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Name: ${this.state.name}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -128,7 +166,7 @@ class Component extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`State: ${this.state.state}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -137,7 +175,7 @@ class Component extends React.Component {
                 caption:
                     <Figure.Caption>
                         <ListGroup>
-                            <ListGroup.Item className="py-3">{`Status: ${this.state.status}`}</ListGroup.Item>
+                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                         </ListGroup>
                     </Figure.Caption>
             }, this.setImage);
@@ -148,11 +186,18 @@ class Component extends React.Component {
 
     render() {
         return (
-            <>
+            <div
+                style={{
+                    position: 'absolute',
+                    left: this.state.x,
+                    top: this.state.y
+                }}
+            >
                 <Figure
                     id={this.props.componentID}
                     ref={this.figureRef}
                     onMouseOver={() => helper.summary(this)}
+                    onMouseOut={() => helper.summary(this)}
                     onDoubleClick={() => helper.detailedStatus(this)}
                     onContextMenu={(e) => helper.control(e, this)}
                 >
@@ -165,8 +210,9 @@ class Component extends React.Component {
                     />
                     {this.state.caption}
                 </Figure>
+                {this.greenCircle()}
                 <Overlay
-                    target={this.figureRef}
+                    target={this.figureImageRef}
                     show={this.state.showSummary}
                     placement="right"
                 >
@@ -177,15 +223,15 @@ class Component extends React.Component {
                             </Popover.Title>
                             <Popover.Content>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>{`State: ${this.state.state}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`Status: ${this.state.status}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
                         </Popover>
                     )}
                 </Overlay>
                 <Overlay
-                    target={this.figureRef}
+                    target={this.figureImageRef}
                     show={this.state.showDetailedStatus}
                     placement="bottom"
                 >
@@ -196,15 +242,15 @@ class Component extends React.Component {
                             </Popover.Title>
                             <Popover.Content>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>{`State: ${this.state.state}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`Status: ${this.state.status}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
                         </Popover>
                     )}
                 </Overlay>
                 <Overlay
-                    target={this.figureRef}
+                    target={this.figureImageRef}
                     show={this.state.showControl}
                     placement="right"
                 >
@@ -229,12 +275,13 @@ class Component extends React.Component {
                                     {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
                                     {helper.addSwitch(this.props.componentID, this, 'showStatus', 'Show status?')}
                                     {helper.addSwitch(this.props.componentID, this, 'safetyLock', 'Enable safety lock')}
+                                    {helper.addOkayButton(this)}
                                 </Form>
                             </Popover.Content>
                         </Popover>
                     )}
                 </Overlay>
-            </>
+            </div>
         )
     }
 }

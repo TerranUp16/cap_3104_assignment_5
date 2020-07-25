@@ -55,150 +55,57 @@ class Gate extends Component {
             ...this.state,
             name: name,
             state: state,
-            status: status
+            status: status,
+            image: "/Images/gate-green.svg"
         };
     }
 
     // Set which image to display
     setImage = () => {
-        if (this.state.state === 'Open' && !this.state.circle && this.state.status === 'Operational') {
+        if (this.state.state === 'Open' && this.state.status === 'Operational') {
             // Open gate painted green
             this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Open' && this.state.circle && this.state.status === 'Operational') {
-            // Open gate painted green with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Open' && !this.state.circle && this.state.status === 'Failed') {
+        } else if (this.state.state === 'Open' && this.state.status === 'Failed') {
             // Open gate painted red
             this.setState({image: "/Images/gate-red.svg"});
-        } else if (this.state.state === 'Open' && this.state.circle && this.state.status === 'Failed') {
-            // Open gate painted red with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Open' && !this.state.circle && this.state.status === 'No Data') {
+        } else if (this.state.state === 'Open' && this.state.status === 'No Data') {
             // Open gate painted gray
             this.setState({image: "/Images/gate-gray.svg"});
-        } else if (this.state.state === 'Open' && this.state.circle && this.state.status === 'No Data') {
-            // Open gate painted gray with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Partially Open' && !this.state.circle && this.state.status === 'Operational') {
+        } else if (this.state.state === 'Partially Open' && this.state.status === 'Operational') {
             // Partially open gate painted green
             this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Partially Open' && this.state.circle && this.state.status === 'Operational') {
-            // Partially open gate painted green with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Partially Open' && !this.state.circle && this.state.status === 'Failed') {
+        } else if (this.state.state === 'Partially Open' && this.state.status === 'Failed') {
             // Partially open gate painted red
             this.setState({image: "/Images/gate-red.svg"});
-        } else if (this.state.state === 'Partially Open' && this.state.circle && this.state.status === 'Failed') {
-            // Partially open gate painted red with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Partially Open' && !this.state.circle && this.state.status === 'No Data') {
+        } else if (this.state.state === 'Partially Open' && this.state.status === 'No Data') {
             // Partially open gate painted gray
             this.setState({image: "/Images/gate-gray.svg"});
-        } else if (this.state.state === 'Partially Open' && this.state.circle && this.state.status === 'No Data') {
-            // Partially open gate painted gray with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Closed' && !this.state.circle && this.state.status === 'Operational') {
+        } else if (this.state.state === 'Closed' && this.state.status === 'Operational') {
             // Closed gate painted green
             this.setState({image: "/Images/gate-green.svg"});
-        } else if (this.state.state === 'Closed' && this.state.circle && this.state.status === 'Operational') {
-            // Closed gate painted green with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Closed' && !this.state.circle && this.state.status === 'Failed') {
+        } else if (this.state.state === 'Closed' && this.state.status === 'Failed') {
             // Closed gate painted red
             this.setState({image: "/Images/gate-red.svg"});
-        } else if (this.state.state === 'Closed' && this.state.circle && this.state.status === 'Failed') {
-            // Closed gate painted red with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        } else if (this.state.state === 'Closed' && !this.state.circle && this.state.status === 'No Data') {
+        } else if (this.state.state === 'Closed' && this.state.status === 'No Data') {
             // Closed gate painted gray
             this.setState({image: "/Images/gate-gray.svg"});
-        } else if (this.state.state === 'Closed' && this.state.circle && this.state.status === 'No Data') {
-            // Closed gate painted gray with circle
-            this.setState({image: "./Images/gate_circled.png"});
-        }
-    }
-
-    setCaption = () => {
-        if (this.state.showName && this.state.showState && this.state.showStatus) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showName && this.state.showState) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.state}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showName && this.state.showStatus) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-2">{`Name: ${this.state.name}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Status: ${this.state.status}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showState && this.state.showStatus) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-2">{`State: ${this.state.state}`}</ListGroup.Item>
-                            <ListGroup.Item className="py-2">{`Status: ${this.state.status}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showName) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-3">{`Name: ${this.state.name}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showState) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-3">{`State: ${this.state.state}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else if (this.state.showStatus) {
-            this.setState({
-                caption:
-                    <Figure.Caption>
-                        <ListGroup>
-                            <ListGroup.Item className="py-3">{`Status: ${this.state.status}`}</ListGroup.Item>
-                        </ListGroup>
-                    </Figure.Caption>
-            }, this.setImage);
-        } else {
-            this.setState({caption: ''}, this.setImage);
         }
     }
 
     render() {
         return (
-            <>
+            <div
+                style={{
+                    position: 'absolute',
+                    left: this.state.x,
+                    top: this.state.y
+                }}
+            >
                 <Figure
                     id={this.props.componentID}
                     ref={this.figureRef}
                     onMouseOver={() => helper.summary(this)}
+                    onMouseOut={() => helper.summary(this)}
                     onDoubleClick={() => helper.detailedStatus(this)}
                     onContextMenu={(e) => helper.control(e, this)}
                 >
@@ -211,8 +118,9 @@ class Gate extends Component {
                     />
                     {this.state.caption}
                 </Figure>
+                {this.greenCircle()}
                 <Overlay
-                    target={this.figureRef}
+                    target={this.figureImageRef}
                     show={this.state.showSummary}
                     placement="right"
                 >
@@ -223,15 +131,15 @@ class Gate extends Component {
                             </Popover.Title>
                             <Popover.Content>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>{`State: ${this.state.state}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`Status: ${this.state.status}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
                         </Popover>
                     )}
                 </Overlay>
                 <Overlay
-                    target={this.figureRef}
+                    target={this.figureImageRef}
                     show={this.state.showDetailedStatus}
                     placement="bottom"
                 >
@@ -242,15 +150,15 @@ class Gate extends Component {
                             </Popover.Title>
                             <Popover.Content>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item>{`State: ${this.state.state}`}</ListGroup.Item>
-                                    <ListGroup.Item>{`Status: ${this.state.status}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
                         </Popover>
                     )}
                 </Overlay>
                 <Overlay
-                    target={this.figureRef}
+                    target={this.figureImageRef}
                     show={this.state.showControl}
                     placement="right"
                 >
@@ -276,12 +184,13 @@ class Gate extends Component {
                                     {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
                                     {helper.addSwitch(this.props.componentID, this, 'showStatus', 'Show status?')}
                                     {helper.addSwitch(this.props.componentID, this, 'safetyLock', 'Enable safety lock')}
+                                    {helper.addOkayButton(this)}
                                 </Form>
                             </Popover.Content>
                         </Popover>
                     )}
                 </Overlay>
-            </>
+            </div>
         );
     }
 }

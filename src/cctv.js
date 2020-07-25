@@ -5,6 +5,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Figure from 'react-bootstrap/Figure';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
+import Component from './component';
 import * as helper from './helper';
 
 /*
@@ -19,40 +20,26 @@ import * as helper from './helper';
     3.2.1.4.7 The user shall be able to activate a device control window for the selected camera by right clicking on the icon. The right click on the icon shall display a pop-up menu of available device actions from which the user may select. This action shall cause a circle to be displayed over the camera icon for as long as the device control window is displayed for that camera.
 */
 
-/*
-NEEDS-
-    Popover for cctv summary, status, and control- https://react-bootstrap.github.io/components/overlays/#popovers
-        Summary is on-hover
-        "Detailed stauts" is on double-left-click
-        Control is on right-click
-Props-
-    cctvName: String,
-    cctvShowName: [true, false],
-    cctvState: [on, off],
-    cctvShowState: [true, false],
-    cctvStatus: [operational, no communication, failed],
-    cctvShowStatus: [true, false]
-*/
-class CCTV extends React.Component {
+class CCTV extends Component {
     constructor(props) {
         super(props);
 
         // Set defaults
         let name = 'Camera';
         let state = 'On';
-        let status = 'Operational'
+        let status = 'Operational';
 
         // Override defaults based on props
-        if (this.props.hasOwnProperty('cctvName')) {
-            name = this.props.cctvName;
+        if (this.props.hasOwnProperty('name')) {
+            name = this.props.name;
         }
 
-        if (this.props.hasOwnProperty('cctvState')) {
-            state = this.props.cctvState;
+        if (this.props.hasOwnProperty('state')) {
+            state = this.props.state;
         }
 
-        if (this.props.hasOwnProperty('cctvStatus')) {
-            status = this.props.cctvStatus;
+        if (this.props.hasOwnProperty('status')) {
+            status = this.props.status;
         }
 
         // Create references
@@ -61,56 +48,136 @@ class CCTV extends React.Component {
         
         // Set state
         this.state = {
-            cctvName: name,
-            cctvShowName: false,
-            cctvState: state,
-            cctvShowState: false,
-            cctvStatus: status,
-            cctvShowStatus: false,
-            cctvShowSummary: false,
-            cctvShowDetailedStatus: false,
-            cctvShowControl: false,
-            cctvImage: require("./Images/gate.png"),
-            caption: '',
-            circle: false
+            ...this.state,
+            name: name,
+            state: state,
+            status: status,
+            image: "/Images/gate-green.svg"
         }
     }
 
-    // Show/Hide summary
-    summary = (event) => {
-        let show = !this.state.cctvShowSummary;
-        this.setState({
-            cctvShowSummary: show
-        });
+    // Set which image to display
+    setImage = () => {
+        if (this.state.state === 'On' && this.state.status === 'Operational') {
+            // On camera painted green
+            this.setState({image: "/Images/gate-green.svg"});
+        } else if (this.state.state === 'On' && this.state.status === 'Failed') {
+            // On camera painted red
+            this.setState({image: "/Images/gate-red.svg"});
+        } else if (this.state.state === 'On' && this.state.status === 'No Data') {
+            // On camera painted gray
+            this.setState({image: "/Images/gate-gray.svg"});
+        } else if (this.state.state === 'Off' && this.state.status === 'Operational') {
+            // Off camera painted green
+            this.setState({image: "/Images/gate-green.svg"});
+        } else if (this.state.state === 'Off' && this.state.status === 'Failed') {
+            // Off camera painted red
+            this.setState({image: "/Images/gate-red.svg"});
+        } else if (this.state.state === 'Off' && this.state.status === 'No Data') {
+            // Off camera painted gray
+            this.setState({image: "/Images/gate-gray.svg"});
+        }
     }
 
-    // Show/Hide detailed status
-    detailedStatus = (event) => {
-        let show = !this.state.cctvShowDetailedStatus;
-
-        let circle = show || this.state.cctvShowControl;
-
-        this.setState({
-            cctvShowDetailedStatus: show,
-            circle: circle
-        }, this.setImage);
+    render() {
+        return (
+            <div
+                style={{
+                    position: 'absolute',
+                    left: this.state.x,
+                    top: this.state.y
+                }}
+            >
+                <Figure
+                    id={this.props.componentID}
+                    ref={this.figureRef}
+                    onMouseOver={() => helper.summary(this)}
+                    onMouseOut={() => helper.summary(this)}
+                    onDoubleClick={() => helper.detailedStatus(this)}
+                    onContextMenu={(e) => helper.control(e, this)}
+                >
+                    <Figure.Image
+                        ref={this.figureImageRef}
+                        height={this.state.height}
+                        width={this.state.width}
+                        alt={`${this.state.name} ${this.state.state}`}
+                        src={this.state.image}
+                    />
+                    {this.state.caption}
+                </Figure>
+                {this.greenCircle()}
+                <Overlay
+                    target={this.figureImageRef}
+                    show={this.state.showSummary}
+                    placement="right"
+                >
+                    {(props) => (
+                        <Popover {...props}>
+                            <Popover.Title as="h3">
+                                {`${this.state.name} Summary`}
+                            </Popover.Title>
+                            <Popover.Content>
+                                <ListGroup variant="flush">
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
+                                </ListGroup>
+                            </Popover.Content>
+                        </Popover>
+                    )}
+                </Overlay>
+                <Overlay
+                    target={this.figureImageRef}
+                    show={this.state.showDetailedStatus}
+                    placement="bottom"
+                >
+                    {(props) => (
+                        <Popover {...props}>
+                            <Popover.Title as="h3">
+                                {`${this.state.name} Detailed Status`}
+                            </Popover.Title>
+                            <Popover.Content>
+                                <ListGroup variant="flush">
+                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
+                                </ListGroup>
+                            </Popover.Content>
+                        </Popover>
+                    )}
+                </Overlay>
+                <Overlay
+                    target={this.figureImageRef}
+                    show={this.state.showControl}
+                    placement="right"
+                >
+                    {(props) => (
+                        <Popover {...props}>
+                            <Popover.Title as="h3">
+                                {`Control ${this.state.name}`}
+                            </Popover.Title>
+                            <Popover.Content>
+                                <Form>
+                                    {helper.addText(this.props.componentID, this, 'name', 'Change Name', this.state.name)}
+                                    {helper.addSelect(this.props.componentID, this, 'state', 'Change State', [
+                                        'On',
+                                        'Off'
+                                    ])}
+                                    {helper.addSelect(this.props.componentID, this, 'status', 'Change Status', [
+                                        'Operational',
+                                        'Failed',
+                                        'No Data'
+                                    ])}
+                                    {helper.addSwitch(this.props.componentID, this, 'showName', 'Show name?')}
+                                    {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
+                                    {helper.addSwitch(this.props.componentID, this, 'showStatus', 'Show status?')}
+                                    {helper.addOkayButton(this)}
+                                </Form>
+                            </Popover.Content>
+                        </Popover>
+                    )}
+                </Overlay>
+            </div>
+        );
     }
-
-    // Show/Hide contextual control
-    control = (event) => {
-        event.preventDefault();
-
-        let show = !this.state.cctvShowControl;
-
-        let circle = show || this.state.cctvShowDetailedStatus;
-
-        this.setState({
-            cctvShowControl: show,
-            circle: circle
-        }, this.setImage);
-    }
-
-    
 }
 
 export default CCTV;
