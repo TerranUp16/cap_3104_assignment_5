@@ -44,7 +44,7 @@ class Incident extends Component {
             ...this.state,
             name: name,
             state: state,
-            image: "/Images/gate-green.svg"
+            image: "/Images/incident.svg"
         }
     }
 
@@ -52,16 +52,16 @@ class Incident extends Component {
     setImage = () => {
         if (this.state.state === 'Clear') {
             // Open road image
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/incident.svg"});
         } else if (this.state.state === 'Waiting for Tow') {
             // Tow truck image
-            this.setState({image: "/Images/gate-yellow.svg"});
+            this.setState({image: "/Images/incident.svg"});
         } else if (this.state.state === 'New') {
             // Car crash image
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/incident.svg"});
         } else {
             // Question mark for "Unknown"
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/incident.svg"});
         }
     }
 
