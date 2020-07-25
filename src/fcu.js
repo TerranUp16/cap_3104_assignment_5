@@ -124,6 +124,7 @@ class FCU extends Component {
                                 <ListGroup variant="flush">
                                     <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
+                                {helper.addCloseButton(this)}
                             </Popover.Content>
                         </Popover>
                     )}

@@ -353,6 +353,7 @@ class LoopDetector extends Component {
                             </Popover.Title>
                             <Popover.Content>
                                 {this.detailedOutput()}
+                                {helper.addCloseButton(this)}
                             </Popover.Content>
                         </Popover>
                     )}
