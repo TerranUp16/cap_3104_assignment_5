@@ -1,5 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 import Gate from './gate';
 import Popups from './popups';
 import CMS from './cms';
@@ -11,6 +15,105 @@ import HOV from './hov';
 import Incident from './incident';
 import LoopDetector from './loop-detectors';
 import Component from './component';
+
+class TopBar extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            active: false,
+            selected: 'Gate',
+            add: false,
+            remove: false
+        };
+    }
+
+    addButton = () => {
+        if (this.state.add) {
+            return (
+                <Button
+                    variant="success"
+                    block
+                    active
+                >
+                    Add Selected Component
+                </Button>
+            );
+        } else {
+            return (
+                <Button
+                    variant="success"
+                    block
+                >
+                    Add Selected Component
+                </Button>
+            )
+        }
+    }
+
+    openEditor = () => {
+        this.setState({active: true});
+    }
+
+    render () {
+        if (this.state.active) {
+            return (
+                <Form>
+                    <Row>
+                        <Col>
+                            <Form.Control
+                                as="select"
+                                defaultValue={this.state.selected}
+                                custom
+                            >
+                                <option>Gate</option>
+                                <option>Popup Group</option>
+                                <option>CMS</option>
+                                <option>CCTV</option>
+                                <option>Draw Lights</option>
+                                <option>Wrong Way Lights</option>
+                                <option>Loop Detector</option>
+                                <option>Group of Loop Detectors</option>
+                                <option>FCU/DCU/MCU</option>
+                                <option>HOV</option>
+                                <option>Incident</option>
+                            </Form.Control>
+                        </Col>
+                        <Col>
+                            {this.addButton()}
+                        </Col>
+                        <Col>
+                            <Button
+                                variant="danger"
+                                block
+                            >
+                                Remove Component
+                            </Button>
+                        </Col>
+                        <Col>
+                            <Button
+                                variant="dark"
+                                block
+                            >
+                                Close Editor
+                            </Button>
+                        </Col>
+                    </Row>
+                </Form>
+            )
+        } else {
+            return (
+                <Button
+                    variant="dark"
+                    block
+                    onClick={(e) => this.openEditor()}
+                >
+                    Add or Remove Components
+                </Button>
+            )
+        }
+    }
+}
 
 const productionComponents = [
     <Gate componentID={1} x={530} y={325} name='Farmington Gate' />,
@@ -90,6 +193,27 @@ Highway.defaultProps = {
     startingComponents: new Array()
 }
 
-// ReactDOM.render(<Highway startingComponents={productionComponents} firstID={13} />, document.getElementById('root'));
-ReactDOM.render(<Highway startingComponents={testComponents} firstID={6} />, document.getElementById('root'));
-// ReactDOM.render(<Highway />, document.getElementById('root'));
+/*
+ReactDOM.render(
+    <>
+        <TopBar />
+        <Highway startingComponents={productionComponents} firstID={13} />
+    </>, document.getElementById('root')
+);
+*/
+
+ReactDOM.render(
+    <>
+        <TopBar />
+        <Highway startingComponents={testComponents} firstID={6} />
+    </>, document.getElementById('root')
+);
+
+/*
+ReactDOM.render(
+    <>
+        <TopBar />
+        <Highway />
+    </>, document.getElementById('root')
+);
+*/
