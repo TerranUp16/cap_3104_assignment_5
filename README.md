@@ -28,8 +28,8 @@ npm start ;
 
 1. Right-click any component
 2. Use the pop-up menu to make changes to the component
-  * Changes are saved immediately
-3. Close the pop-up menu by selecting the `Close` button
+3. Changes are saved immediately
+4. Close the pop-up menu by selecting the `Close` button
 
 ## View Summary of a Component
 
