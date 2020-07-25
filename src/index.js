@@ -9,6 +9,7 @@ import WrongWayLights from './wrong-way-lights';
 import FCU from './fcu';
 import HOV from './hov';
 import Incident from './incident';
+import LoopDetector from './loop-detectors';
 import Component from './component';
 
 class Highway extends React.Component {
@@ -36,6 +37,7 @@ class Highway extends React.Component {
                 <FCU componentID={8} x={525} y={1400} status='Failed' />
                 <HOV componentID={9} x={515} y={125} state='Open Southbound' />
                 <Incident componentID={10} x={535} y={1250} state='New' />
+                <LoopDetector componentID={11} x={20} y={20} />
             </div>
         );
     }

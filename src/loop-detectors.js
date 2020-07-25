@@ -5,6 +5,12 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Figure from 'react-bootstrap/Figure';
 import Overlay from 'react-bootstrap/Overlay';
 import Popover from 'react-bootstrap/Popover';
+import Accordion from 'react-bootstrap/Accordion';
+import Card from 'react-bootstrap/Card';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 import Component from './component';
 import * as helper from './helper';
 
@@ -58,22 +64,27 @@ class LoopDetector extends Component {
         super(props);
 
         // Set of available images
-        const images = {
-            Red: '/Images/gate-red.svg',
-            Yellow: '/Images/gate-yellow.svg',
-            Green: '/Images/gate-green.svg'
+        this.images = {
+            'Red': '/Images/gate-red.svg',
+            'Yellow': '/Images/gate-yellow.svg',
+            'Green': '/Images/gate-green.svg'
         }
 
         // Set of available images for group
-        const groupImages = {
-            Red: '/Images/gate-red.svg',
-            Yellow: '/Images/gate-yellow.svg',
-            Green: '/Images/gate-green.svg'
+        this.groupImages = {
+            'Red': '/Images/gate-red.svg',
+            'Yellow': '/Images/gate-yellow.svg',
+            'Green': '/Images/gate-green.svg'
         }
 
         // Set defaults
         let group = false;
-        let name = 'Loop Detector';
+        let name;
+        if (group) {
+            name = 'Group Detector';
+        } else {
+            name = 'Loop Detector';
+        }
         let status = 'Operational';
         let colorData = 'Speed';
         let n = 1;
@@ -163,7 +174,7 @@ class LoopDetector extends Component {
             ...this.state,
             group: group,
             name: name,
-            state: state,
+            status: status,
             colorData: colorData,
             n: n,
             rangeLow: rangeLow,
@@ -192,6 +203,50 @@ class LoopDetector extends Component {
         }
     }
 
+    // Adds persistent-display text below component
+    setCaption = () => {
+        let showList = new Array();
+
+        if (this.state.showName) {
+            showList.push(
+                <ListGroup.Item className="py-1">{`Name: ${this.state.name}`}</ListGroup.Item>
+            )
+        }
+
+        if (this.state.showStatus) {
+            showList.push(
+                <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
+            )
+        }
+
+        if (this.state.showSpeed) {
+            showList.push(
+                <ListGroup.Item className="py-1">{`Speed: ${this.state.speed}mph`}</ListGroup.Item>
+            )
+        }
+
+        if (this.state.showVolume) {
+            showList.push(
+                <ListGroup.Item className="py-1">{`Volume: ${this.state.volume}gal`}</ListGroup.Item>
+            )
+        }
+
+        if (this.state.showOccupancy) {
+            showList.push(
+                <ListGroup.Item className="py-1">{`Occupancy: ${this.state.occupancy} Persons`}</ListGroup.Item>
+            )
+        }
+
+        this.setState({
+            caption:
+                <Figure.Caption>
+                    <ListGroup>
+                        {showList}
+                    </ListGroup>
+                </Figure.Caption>
+        }, this.setImage);
+    }
+
     // Set which image to display
     setImage = () => {
         // Get current value of whatever is the active metric
@@ -203,7 +258,7 @@ class LoopDetector extends Component {
             if (value <= this.state.rangeLow) {
                 // Value is "low", so get the path to the image of the color specified by state.lowColor
                 this.setState({image: this.groupImages[this.state.lowColor]});
-            } else if (value => this.state.rangeHigh) {
+            } else if (value >= this.state.rangeHigh) {
                 // Value is "high", so get the path to the image of the color specified by state.highColor
                 this.setState({image: this.groupImages[this.state.highColor]});
             } else {
@@ -215,13 +270,36 @@ class LoopDetector extends Component {
             if (value <= this.state.rangeLow) {
                 // Value is "low", so get the path to the image of the color specified by state.lowColor
                 this.setState({image: this.images[this.state.lowColor]});
-            } else if (value => this.state.rangeHigh) {
+            } else if (value >= this.state.rangeHigh) {
                 // Value is "high", so get the path to the image of the color specified by state.highColor
                 this.setState({image: this.images[this.state.highColor]});
             } else {
                 // If the value isn't high or low... it's mid, so set accordingly
                 this.setState({image: this.images[this.state.midColor]});
             }
+        }
+    }
+
+    // Handle the need to output differently for group
+    detailedOutput = () => {
+        if (this.state.group) {
+            return (
+                <ListGroup variant="flush">
+                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
+                    <ListGroup.Item className="py-1">{`${this.state.n}s Avg Speed: ${this.state.speed}mph`}</ListGroup.Item>
+                    <ListGroup.Item className="py-1">{`${this.state.n}s Avg Volume: ${this.state.volume}gal`}</ListGroup.Item>
+                    <ListGroup.Item className="py-1">{`${this.state.n}s Avg Occupancy: ${this.state.occupancy} Persons`}</ListGroup.Item>
+                </ListGroup>
+            );
+        } else {
+            return (
+                <ListGroup variant="flush">
+                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
+                    <ListGroup.Item className="py-1">{`${this.state.n}s Speed: ${this.state.speed}mph`}</ListGroup.Item>
+                    <ListGroup.Item className="py-1">{`${this.state.n}s Volume: ${this.state.volume}gal`}</ListGroup.Item>
+                    <ListGroup.Item className="py-1">{`${this.state.n}s Occupancy: ${this.state.occupancy} Persons`}</ListGroup.Item>
+                </ListGroup>
+            );
         }
     }
 
@@ -264,7 +342,6 @@ class LoopDetector extends Component {
                             </Popover.Title>
                             <Popover.Content>
                                 <ListGroup variant="flush">
-                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                                     <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
                             </Popover.Content>
@@ -282,10 +359,7 @@ class LoopDetector extends Component {
                                 {`${this.state.name} Detailed Status`}
                             </Popover.Title>
                             <Popover.Content>
-                                <ListGroup variant="flush">
-                                    <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
-                                    <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
-                                </ListGroup>
+                                {this.detailedOutput()}
                             </Popover.Content>
                         </Popover>
                     )}
@@ -302,19 +376,88 @@ class LoopDetector extends Component {
                             </Popover.Title>
                             <Popover.Content>
                                 <Form>
-                                    {helper.addText(this.props.componentID, this, 'name', 'Change Name', this.state.name)}
-                                    {helper.addSelect(this.props.componentID, this, 'state', 'Change State', [
-                                        'On',
-                                        'Off'
-                                    ])}
-                                    {helper.addSelect(this.props.componentID, this, 'status', 'Change Status', [
-                                        'Operational',
-                                        'Failed',
-                                        'No Data'
-                                    ])}
-                                    {helper.addSwitch(this.props.componentID, this, 'showName', 'Show name?')}
-                                    {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
-                                    {helper.addSwitch(this.props.componentID, this, 'showStatus', 'Show status?')}
+                                    <Accordion>
+                                        <Card>
+                                            <Card.Header>
+                                                <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                                                    Basic Configuration
+                                                </Accordion.Toggle>
+                                            </Card.Header>
+                                            <Accordion.Collapse eventKey="0">
+                                                <Card.Body>
+                                                    {helper.addText(this.props.componentID, this, 'name', 'Change Name', this.state.name)}
+                                                    {helper.addSwitch(this.props.componentID, this, 'group', 'Is this a group?')}
+                                                    <br />
+                                                    {helper.addSelect(this.props.componentID, this, 'status', 'Change Status', [
+                                                        'Operational',
+                                                        'Failed',
+                                                        'No Data'
+                                                    ])}
+                                                    {helper.addSelect(this.props.componentID, this, 'colorData', 'Change Data Displayed by Icon', [
+                                                        'Speed',
+                                                        'Volume',
+                                                        'Occupancy'
+                                                    ])}
+                                                    {helper.addSwitch(this.props.componentID, this, 'showName', 'Show name?')}
+                                                    {helper.addSwitch(this.props.componentID, this, 'showStatus', 'Show status?')}
+                                                    {helper.addSwitch(this.props.componentID, this, 'showSpeed', 'Show speed?')}
+                                                    {helper.addSwitch(this.props.componentID, this, 'showVolume', 'Show volume?')}
+                                                    {helper.addSwitch(this.props.componentID, this, 'showOccupancy', 'Show occupancy?')}
+                                                </Card.Body>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                        <Card>
+                                            <Card.Header>
+                                                <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                                                    Configure Range Values
+                                                </Accordion.Toggle>
+                                            </Card.Header>
+                                            <Accordion.Collapse eventKey="1">
+                                                <Card.Body>
+                                                    {helper.addText(this.props.componentID, this, 'rangeLow', 'Set Lower Range', this.state.rangeLow)}
+                                                    {helper.addText(this.props.componentID, this, 'rangeHigh', 'Set Upper Range', this.state.rangeHigh)}
+                                                </Card.Body>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                        <Card>
+                                            <Card.Header>
+                                                <Accordion.Toggle as={Button} variant="link" eventKey="2">
+                                                    Configure Range Colors
+                                                </Accordion.Toggle>
+                                            </Card.Header>
+                                            <Accordion.Collapse eventKey="2">
+                                                <Card.Body>
+                                                    {helper.addSelect(this.props.componentID, this, 'lowColor', 'Low Color', [
+                                                        'Green',
+                                                        'Yellow',
+                                                        'Red'
+                                                    ])}
+                                                    {helper.addSelect(this.props.componentID, this, 'midColor', 'Mid Color', [
+                                                        'Green',
+                                                        'Yellow',
+                                                        'Red'
+                                                    ])}
+                                                    {helper.addSelect(this.props.componentID, this, 'highColor', 'High Color', [
+                                                        'Green',
+                                                        'Yellow',
+                                                        'Red'
+                                                    ])}
+                                                </Card.Body>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                        <Card>
+                                            <Card.Header>
+                                                <Accordion.Toggle as={Button} variant="link" eventKey="3">
+                                                    Configure Interval
+                                                </Accordion.Toggle>
+                                            </Card.Header>
+                                            <Accordion.Collapse eventKey="3">
+                                                <Card.Body>
+                                                    {helper.addText(this.props.componentID, this, 'n', 'Set Interval (in seconds)', this.state.n)}
+                                                </Card.Body>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                    </Accordion>
                                     {helper.addOkayButton(this)}
                                 </Form>
                             </Popover.Content>
