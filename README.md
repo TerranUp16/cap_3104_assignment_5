@@ -41,7 +41,7 @@ npm start ;
 2. A pop-up window will display the component's detailed status
 3. Dismiss the pop-up window by selecting the `Close` button on it
 
-## Remove Components
+## Remove a Component
 
 1. Select `Add or Remove Components` button from the top of the screen
 2. Select the red `Remove Component` button from the top of the screen
