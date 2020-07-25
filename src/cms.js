@@ -56,6 +56,8 @@ class CMS extends Component {
         // Set state
         this.state = {
             ...this.state,
+            width: this.props.width,
+            height: this.props.height,
             name: name,
             message: message,
             showMessage: false,
@@ -68,28 +70,28 @@ class CMS extends Component {
     setImage = () => {
         if (this.state.state === 'Off' && this.state.status === 'Operational') {
             // No message CMS painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/cms-green.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'Operational w/Errors') {
             // No message CMS painted yellow
-            this.setState({image: "/Images/gate-yellow.svg"});
+            this.setState({image: "/Images/cms-yellow.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'No Communication') {
             // No message CMS painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/cms-gray.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'Failed') {
             // No message CMS painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/cms-red.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'Operational') {
             // Message CMS painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/cms-green-message.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'Operational w/Errors') {
             // Message CMS painted yellow
-            this.setState({image: "/Images/gate-yellow.svg"});
+            this.setState({image: "/Images/cms-yellow-message.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'No Communication') {
             // Message CMS painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/cms-gray-message.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'Failed') {
             // Message CMS painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/cms-red-message.svg"});
         }
     }
 
@@ -364,6 +366,11 @@ class CMS extends Component {
             </div>
         );
     }
+}
+
+CMS.defaultProps = {
+    width: 96,
+    height: 96
 }
 
 export default CMS;
