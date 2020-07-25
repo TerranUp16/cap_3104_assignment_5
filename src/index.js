@@ -140,29 +140,6 @@ class TopBar extends React.Component {
     }
 }
 
-const productionComponents = [
-    <Gate componentID={1} x={530} y={325} name='Farmington Gate' />,
-    <Gate componentID={2} x={520} y={50} name='I-84 Gate' />,
-    <Popups componentID={3} x={528} y={900} status='Failed' />,
-    <CMS componentID={4} x={500} y={650} status='Operational w/Errors' message='Traffic jam, slow down!' />,
-    <CCTV componentID={5} x={522} y={1100} status='No Data' />,
-    <DrawLights componentID={6} x={522} y={1000} state='Partially On' />,
-    <WrongWayLights componentID={7} x={525} y={825} status='Operational w/Errors' />,
-    <FCU componentID={8} x={525} y={1400} status='Failed' />,
-    <HOV componentID={9} x={515} y={125} state='Open Southbound' />,
-    <Incident componentID={10} x={535} y={1250} state='New' />,
-    <LoopDetector componentID={11} x={530} y={550} group={true} />,
-    <LoopDetector componentID={12} x={512} y={225} group={false} />
-];
-
-const testComponents = [
-    <Incident componentID={5} x={525} y={825} state='Clear' description='Involved vehicles have been towed away, debris has been cleared, and police are working to normalize traffic flow.' />,
-    <LoopDetector componentID={4} x={500} y={650} group={true} />,
-    <WrongWayLights componentID={3} x={530} y={450} state='Partially On' />,
-    <DrawLights componentID={2} x={512} y={225} name='Some Lights On Some Lights Off Draw Lights' state='Partially On' />,
-    <Popups componentID={1} x={520} y={50} name='Some Up Some Down Popups' status='Failed' />
-];
-
 class Highway extends React.Component {
     constructor(props) {
         super(props);
@@ -181,11 +158,41 @@ class Highway extends React.Component {
             'Incident': Incident
         }
 
+        let startingComponents = new Array();
+        let firstID = this.props.firstID;
+
+        if (this.props.startingComponents === 'Prod') {
+            startingComponents = [
+                <Gate componentID={1} x={530} y={325} name='Farmington Gate' removeComponent={this.removeComponent} />,
+                <Gate componentID={2} x={520} y={50} name='I-84 Gate' removeComponent={this.removeComponent} />,
+                <Popups componentID={3} x={528} y={900} status='Failed' removeComponent={this.removeComponent} />,
+                <CMS componentID={4} x={500} y={650} status='Operational w/Errors' message='Traffic jam, slow down!' removeComponent={this.removeComponent} />,
+                <CCTV componentID={5} x={522} y={1100} status='No Data' removeComponent={this.removeComponent} />,
+                <DrawLights componentID={6} x={522} y={1000} state='Partially On' removeComponent={this.removeComponent} />,
+                <WrongWayLights componentID={7} x={525} y={825} status='Operational w/Errors' removeComponent={this.removeComponent} />,
+                <FCU componentID={8} x={525} y={1400} status='Failed' removeComponent={this.removeComponent} />,
+                <HOV componentID={9} x={515} y={125} state='Open Southbound' removeComponent={this.removeComponent} />,
+                <Incident componentID={10} x={535} y={1250} state='New' removeComponent={this.removeComponent} />,
+                <LoopDetector componentID={11} x={530} y={550} group={true} removeComponent={this.removeComponent} />,
+                <LoopDetector componentID={12} x={512} y={225} group={false} removeComponent={this.removeComponent} />
+            ];
+            firstID = 13;
+        } else if (this.props.startingComponents === 'Test') {
+            startingComponents = [
+                <Incident componentID={1} x={525} y={825} state='Clear' description='Involved vehicles have been towed away, debris has been cleared, and police are working to normalize traffic flow.' removeComponent={this.removeComponent} />,
+                <LoopDetector componentID={2} x={500} y={650} group={true} removeComponent={this.removeComponent} />,
+                <WrongWayLights componentID={3} x={530} y={450} state='Partially On' removeComponent={this.removeComponent} />,
+                <DrawLights componentID={4} x={512} y={225} name='Some Lights On Some Lights Off Draw Lights' state='Partially On' removeComponent={this.removeComponent} />,
+                <Popups componentID={5} x={520} y={50} name='Some Up Some Down Popups' status='Failed' removeComponent={this.removeComponent} />
+            ];
+            firstID = 6;
+        }
+
         this.divRef = React.createRef();
 
         this.state = {
-            components: this.props.startingComponents,
-            nextID: this.props.firstID,
+            components: startingComponents,
+            nextID: firstID,
             x: 0,
             y: 0
         }
@@ -316,71 +323,26 @@ class Screen extends React.Component {
     }
 
     render() {
-        if (this.props.startingComponents === 'Test') {
-            return (
-                <>
-                    <TopBar
-                        add={this.state.add}
-                        remove={this.state.remove}
-                        selected={this.state.selected}
-                        toggleAdd={this.toggleAdd}
-                        toggleRemove={this.toggleRemove}
-                        changeSelected={this.changeSelected}
-                    />
-                    <Highway
-                        addFlag={this.state.add}
-                        removeFlag={this.state.remove}
-                        toggleAdd={this.toggleAdd}
-                        toggleRemove={this.toggleRemove}
-                        selectedComp={this.state.selected}
-                        startingComponents={testComponents}
-                        firstID={6}
-                    />
-                </>
-            );
-        } else if (this.props.startingComponents === 'Prod') {
-            return (
-                <>
-                    <TopBar
-                        add={this.state.add}
-                        remove={this.state.remove}
-                        selected={this.state.selected}
-                        toggleAdd={this.toggleAdd}
-                        toggleRemove={this.toggleRemove}
-                        changeSelected={this.changeSelected}
-                    />
-                    <Highway
-                        addFlag={this.state.add}
-                        removeFlag={this.state.remove}
-                        toggleAdd={this.toggleAdd}
-                        toggleRemove={this.toggleRemove}
-                        selectedComp={this.state.selected}
-                        startingComponents={productionComponents}
-                        firstID={13}
-                    />
-                </>
-            );
-        } else {
-            return (
-                <>
-                    <TopBar
-                        add={this.state.add}
-                        remove={this.state.remove}
-                        selected={this.state.selected}
-                        toggleAdd={this.toggleAdd}
-                        toggleRemove={this.toggleRemove}
-                        changeSelected={this.changeSelected}
-                    />
-                    <Highway
-                        addFlag={this.state.add}
-                        removeFlag={this.state.remove}
-                        toggleAdd={this.toggleAdd}
-                        toggleRemove={this.toggleRemove}
-                        selectedComp={this.state.selected}
-                    />
-                </>
-            );
-        }
+        return (
+            <>
+                <TopBar
+                    add={this.state.add}
+                    remove={this.state.remove}
+                    selected={this.state.selected}
+                    toggleAdd={this.toggleAdd}
+                    toggleRemove={this.toggleRemove}
+                    changeSelected={this.changeSelected}
+                />
+                <Highway
+                    addFlag={this.state.add}
+                    removeFlag={this.state.remove}
+                    toggleAdd={this.toggleAdd}
+                    toggleRemove={this.toggleRemove}
+                    selectedComp={this.state.selected}
+                    startingComponents={this.props.startingComponents}
+                />
+            </>
+        );
     }
 }
 
@@ -389,6 +351,6 @@ Screen.defaultProps = {
     selected: 'Gate'
 }
 
-ReactDOM.render(<Screen />, document.getElementById('root'));
+// ReactDOM.render(<Screen />, document.getElementById('root'));
 // ReactDOM.render(<Screen startingComponents='Prod' />, document.getElementById('root'));
-// ReactDOM.render(<Screen startingComponents='Test' />, document.getElementById('root'));
+ReactDOM.render(<Screen startingComponents='Test' />, document.getElementById('root'));
