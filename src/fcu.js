@@ -44,7 +44,7 @@ class FCU extends Component {
             ...this.state,
             name: name,
             status: status,
-            image: "/Images/gate-green.svg"
+            image: "/Images/fcu-dcu-mcu-green.svg"
         }
     }
 
@@ -52,16 +52,16 @@ class FCU extends Component {
     setImage = () => {
         if (this.state.status === 'Operational') {
             // FCU green for healthy
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/fcu-dcu-mcu-green.svg"});
         } else if (this.state.status === 'Operational w/Errors') {
             // FCU yellow for warning
-            this.setState({image: "/Images/gate-yellow.svg"});
+            this.setState({image: "/Images/fcu-dcu-mcu-yellow.svg"});
         } else if (this.state.status === 'Failed') {
             // FCU red for failed
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/fcu-dcu-mcu-red.svg"});
         } else {
             // FCU gray for no data/interdeterminate status
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/fcu-dcu-mcu-gray.svg"});
         }
     }
 
