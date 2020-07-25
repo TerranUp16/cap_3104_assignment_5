@@ -62,7 +62,8 @@ class CMS extends Component {
             message: message,
             showMessage: false,
             state: state,
-            status: status
+            status: status,
+            image: "/Images/cms-green-message.svg"
         };
     }
 
