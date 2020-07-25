@@ -24,7 +24,7 @@ class Incident extends Component {
 
         // Set defaults
         let name = 'Incident';
-        let state = 'Waiting for Tow';
+        let state = 'New';
 
         // Override defaults based on props
         if (this.props.hasOwnProperty('name')) {
@@ -74,6 +74,7 @@ class Incident extends Component {
                     left: this.state.x,
                     top: this.state.y
                 }}
+                onClick={(e) => this.props.removeComponent(this.props.componentID)}
             >
                 <Figure
                     id={this.props.componentID}

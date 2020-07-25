@@ -21,20 +21,18 @@ class TopBar extends React.Component {
         super(props);
 
         this.state = {
-            active: false,
-            selected: 'Gate',
-            add: false,
-            remove: false
+            active: false
         };
     }
 
     addButton = () => {
-        if (this.state.add) {
+        if (this.props.add) {
             return (
                 <Button
                     variant="success"
                     block
                     active
+                    onClick={(e) => this.props.toggleAdd()}
                 >
                     Add Selected Component
                 </Button>
@@ -44,15 +42,45 @@ class TopBar extends React.Component {
                 <Button
                     variant="success"
                     block
+                    onClick={(e) => this.props.toggleAdd()}
                 >
                     Add Selected Component
                 </Button>
-            )
+            );
+        }
+    }
+
+    removeButton = () => {
+        if (this.props.remove) {
+            return (
+                <Button
+                    variant="danger"
+                    block
+                    active
+                    onClick={(e) => this.props.toggleRemove()}
+                >
+                    Remove Component
+                </Button>
+            );
+        } else {
+            return (
+                <Button
+                    variant="danger"
+                    block
+                    onClick={(e) => this.props.toggleRemove()}
+                >
+                    Remove Component
+                </Button>
+            );
         }
     }
 
     openEditor = () => {
         this.setState({active: true});
+    }
+
+    closeEditor = () => {
+        this.setState({active: false});
     }
 
     render () {
@@ -63,8 +91,9 @@ class TopBar extends React.Component {
                         <Col>
                             <Form.Control
                                 as="select"
-                                defaultValue={this.state.selected}
+                                defaultValue={this.props.selected}
                                 custom
+                                onChange={(e) => this.props.changeSelected(e)}
                             >
                                 <option>Gate</option>
                                 <option>Popup Group</option>
@@ -83,17 +112,13 @@ class TopBar extends React.Component {
                             {this.addButton()}
                         </Col>
                         <Col>
-                            <Button
-                                variant="danger"
-                                block
-                            >
-                                Remove Component
-                            </Button>
+                            {this.removeButton()}
                         </Col>
                         <Col>
                             <Button
                                 variant="dark"
                                 block
+                                onClick={(e) => this.closeEditor()}
                             >
                                 Close Editor
                             </Button>
@@ -142,33 +167,79 @@ class Highway extends React.Component {
     constructor(props) {
         super(props);
 
+        this.componentMap = {
+            'Gate': Gate,
+            'Popup Group': Popups,
+            'CMS': CMS,
+            'CCTV': CCTV,
+            'Draw Lights': DrawLights,
+            'Wrong Way Lights': WrongWayLights,
+            'Loop Detector': LoopDetector,
+            'Group of Loop Detectors': LoopDetector,
+            'FCU/DCU/MCU': FCU,
+            'HOV': HOV,
+            'Incident': Incident
+        }
+
+        this.divRef = React.createRef();
+
         this.state = {
             components: this.props.startingComponents,
-            nextID: this.props.firstID
+            nextID: this.props.firstID,
+            x: 0,
+            y: 0
         }
     }
 
-    // Load fresh starting components
-    componentDidMount() {
-        /*this.addComponent(Gate, {
-            x: 30,
-            y: 30,
-            name: 'Testy Gater',
-            state: 'Partially Open',
-            status: 'Failed'
-        });*/
+    // Add a component to the render state
+    addComponent = () => {
+        if (this.props.addFlag) {
+            let x = this.state.x - this.props.xOffset;
+            let y = this.state.y - this.divRef.current.offsetTop;
+
+            let props = {
+                componentID: this.state.nextID,
+                x: x,
+                y: y,
+                removeComponent: this.removeComponent
+            }
+
+            if (this.props.selectedComp === 'Group of Loop Detectors') {
+                props['group'] = true;
+                props['name'] = 'Group of Loop Detectors';
+            }
+
+            let type = this.componentMap[this.props.selectedComp];
+
+            let components = this.state.components;
+            components.push(React.createElement(type, props));
+            let nextID = this.state.nextID + 1;
+
+            this.setState({
+                components: components,
+                nextID: nextID
+            }, this.props.toggleAdd());
+        }
     }
 
-    // Add a gate to the render state
-    addComponent = (type, props) => {
-        props['componentID'] = this.state.nextID;
-        let components = this.state.components;
-        components.push(React.createElement(type, props));
-        let nextID = this.state.nextID++;
+    // Remove a component from the render state
+    removeComponent = (id) => {
+        if (this.props.removeFlag) {
+            let components = this.state.components;
 
+            delete components[id-1];
+
+            this.setState({
+                components: components,
+            }, this.props.toggleRemove());
+        }
+    }
+
+    // Track mouse to know where to place new component
+    updateMouse = (e) => {
         this.setState({
-            components: components,
-            nextID: nextID
+            x: e.clientX,
+            y: e.clientY
         });
     }
 
@@ -181,6 +252,9 @@ class Highway extends React.Component {
                     backgroundRepeat: 'no-repeat',
                     backgroundSize: 'auto'
                 }}
+                ref={this.divRef}
+                onClick={(e) => this.addComponent()}
+                onMouseMove={(e) => this.updateMouse(e)}
             >
                 {this.state.components}
             </div>
@@ -190,30 +264,131 @@ class Highway extends React.Component {
 
 Highway.defaultProps = {
     firstID: 1,
-    startingComponents: new Array()
+    startingComponents: new Array(),
+    xOffset: 32
 }
 
-/*
-ReactDOM.render(
-    <>
-        <TopBar />
-        <Highway startingComponents={productionComponents} firstID={13} />
-    </>, document.getElementById('root')
-);
-*/
+class Screen extends React.Component {
+    constructor(props) {
+        super(props)
 
-ReactDOM.render(
-    <>
-        <TopBar />
-        <Highway startingComponents={testComponents} firstID={6} />
-    </>, document.getElementById('root')
-);
+        this.state = {
+            add: false,
+            remove: false,
+            selected: this.props.selected
+        }
+    }
 
-/*
-ReactDOM.render(
-    <>
-        <TopBar />
-        <Highway />
-    </>, document.getElementById('root')
-);
-*/
+    toggleAdd = () => {
+        let add = !this.state.add;
+
+        if (add) {
+            this.setState({
+                add: true,
+                remove: false
+            });
+        } else {
+            this.setState({
+                add: false
+            });
+        }
+    }
+
+    toggleRemove = () => {
+        let remove = !this.state.remove;
+
+        if (remove) {
+            this.setState({
+                add: false,
+                remove: true
+            })
+        } else {
+            this.setState({
+                remove: false
+            });
+        }
+    }
+
+    changeSelected = (e) => {
+        this.setState({
+            selected: e.target.value
+        })
+    }
+
+    render() {
+        if (this.props.startingComponents === 'Test') {
+            return (
+                <>
+                    <TopBar
+                        add={this.state.add}
+                        remove={this.state.remove}
+                        selected={this.state.selected}
+                        toggleAdd={this.toggleAdd}
+                        toggleRemove={this.toggleRemove}
+                        changeSelected={this.changeSelected}
+                    />
+                    <Highway
+                        addFlag={this.state.add}
+                        removeFlag={this.state.remove}
+                        toggleAdd={this.toggleAdd}
+                        toggleRemove={this.toggleRemove}
+                        selectedComp={this.state.selected}
+                        startingComponents={testComponents}
+                        firstID={6}
+                    />
+                </>
+            );
+        } else if (this.props.startingComponents === 'Prod') {
+            return (
+                <>
+                    <TopBar
+                        add={this.state.add}
+                        remove={this.state.remove}
+                        selected={this.state.selected}
+                        toggleAdd={this.toggleAdd}
+                        toggleRemove={this.toggleRemove}
+                        changeSelected={this.changeSelected}
+                    />
+                    <Highway
+                        addFlag={this.state.add}
+                        removeFlag={this.state.remove}
+                        toggleAdd={this.toggleAdd}
+                        toggleRemove={this.toggleRemove}
+                        selectedComp={this.state.selected}
+                        startingComponents={productionComponents}
+                        firstID={13}
+                    />
+                </>
+            );
+        } else {
+            return (
+                <>
+                    <TopBar
+                        add={this.state.add}
+                        remove={this.state.remove}
+                        selected={this.state.selected}
+                        toggleAdd={this.toggleAdd}
+                        toggleRemove={this.toggleRemove}
+                        changeSelected={this.changeSelected}
+                    />
+                    <Highway
+                        addFlag={this.state.add}
+                        removeFlag={this.state.remove}
+                        toggleAdd={this.toggleAdd}
+                        toggleRemove={this.toggleRemove}
+                        selectedComp={this.state.selected}
+                    />
+                </>
+            );
+        }
+    }
+}
+
+Screen.defaultProps = {
+    startingComponents: '',
+    selected: 'Gate'
+}
+
+ReactDOM.render(<Screen />, document.getElementById('root'));
+// ReactDOM.render(<Screen startingComponents='Prod' />, document.getElementById('root'));
+// ReactDOM.render(<Screen startingComponents='Test' />, document.getElementById('root'));
