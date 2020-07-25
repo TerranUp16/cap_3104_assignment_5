@@ -220,21 +220,39 @@ class LoopDetector extends Component {
         }
 
         if (this.state.showSpeed) {
-            showList.push(
-                <ListGroup.Item className="py-1">{`Speed: ${this.state.speed}mph`}</ListGroup.Item>
-            )
+            if (this.state.group) {
+                showList.push(
+                    <ListGroup.Item className="py-1">{`${this.state.n}s Avg Speed: ${this.state.speed}mph`}</ListGroup.Item>
+                )
+            } else {
+                showList.push(
+                    <ListGroup.Item className="py-1">{`${this.state.n}s Speed: ${this.state.speed}mph`}</ListGroup.Item>
+                )
+            }
         }
 
         if (this.state.showVolume) {
-            showList.push(
-                <ListGroup.Item className="py-1">{`Volume: ${this.state.volume}gal`}</ListGroup.Item>
-            )
+            if (this.state.group) {
+                showList.push(
+                    <ListGroup.Item className="py-1">{`${this.state.n}s Avg Volume: ${this.state.volume}gal`}</ListGroup.Item>
+                )
+            } else {
+                showList.push(
+                    <ListGroup.Item className="py-1">{`${this.state.n}s Volume: ${this.state.volume}gal`}</ListGroup.Item>
+                )
+            }
         }
 
         if (this.state.showOccupancy) {
-            showList.push(
-                <ListGroup.Item className="py-1">{`Occupancy: ${this.state.occupancy} Persons`}</ListGroup.Item>
-            )
+            if (this.state.group) {
+                showList.push(
+                    <ListGroup.Item className="py-1">{`${this.state.n}s Avg Occupancy: ${this.state.occupancy} Persons`}</ListGroup.Item>
+                )
+            } else {
+                showList.push(
+                    <ListGroup.Item className="py-1">{`${this.state.n}s Occupancy: ${this.state.occupancy} Persons`}</ListGroup.Item>
+                )
+            }
         }
 
         this.setState({
@@ -454,6 +472,20 @@ class LoopDetector extends Component {
                                             <Accordion.Collapse eventKey="3">
                                                 <Card.Body>
                                                     {helper.addText(this.props.componentID, this, 'n', 'Set Interval (in seconds)', this.state.n)}
+                                                </Card.Body>
+                                            </Accordion.Collapse>
+                                        </Card>
+                                        <Card>
+                                            <Card.Header>
+                                                <Accordion.Toggle as={Button} variant="link" eventKey="4">
+                                                    Set Detected Values
+                                                </Accordion.Toggle>
+                                            </Card.Header>
+                                            <Accordion.Collapse eventKey="4">
+                                                <Card.Body>
+                                                    {helper.addText(this.props.componentID, this, 'speed', 'Set Speed (in mph)', this.state.speed)}
+                                                    {helper.addText(this.props.componentID, this, 'volume', 'Set Volume (in gal)', this.state.volume)}
+                                                    {helper.addText(this.props.componentID, this, 'occupancy', 'Set Occupancy (in Persons)', this.state.occupancy)}
                                                 </Card.Body>
                                             </Accordion.Collapse>
                                         </Card>
