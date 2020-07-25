@@ -31,8 +31,6 @@ class Popups extends Component {
         let name = 'Popup Group';
         let state = 'Down' ;
         let status = 'Operational' ;
-        let width = 48;
-        let height = 48;
 
         // Override defaults based on props
         if (this.props.hasOwnProperty('name')) {
@@ -47,14 +45,6 @@ class Popups extends Component {
             status = this.props.status;
         }
 
-        if (this.props.hasOwnProperty('width')) {
-            width = this.props.width;
-        }
-
-        if (this.props.hasOwnProperty('height')) {
-            height = this.props.height;
-        }
-
         // Create references
         this.figureRef = React.createRef();
         this.figureImageRef = React.createRef();
@@ -62,12 +52,10 @@ class Popups extends Component {
         // Set state
         this.state = {
             ...this.state,
-            width: width,
-            height: height,
             name: name,
             state: state,
             status: status,
-            image: "/Images/gate-green.svg"
+            image: "/Images/popup-green-closed.svg"
         }
     }
 
@@ -75,19 +63,19 @@ class Popups extends Component {
     setImage = () => {
         if (this.state.status === 'Failed') {
             // If popup group is in a failed state, we need to display the failed state image regardless of whether state is up or down
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/popup-red-closed.svg"});
         } else if (this.state.state === 'Up' && this.state.status === 'Operational') {
             // Up popup group painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/popup-green-closed.svg"});
         } else if (this.state.state === 'Up' && this.state.status === 'No Data') {
             // Up popup group painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/popup-gray-closed.svg"});
         } else if (this.state.state === 'Down' && this.state.status === 'Operational') {
             // Down popup group painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/popup-green-open.svg"});
         } else if (this.state.state === 'Down' && this.state.status === 'No Data') {
             // Down popup group painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/popup-gray-open.svg"});
         }
     }
 
