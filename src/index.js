@@ -15,6 +15,35 @@ import Component from './component';
 class Highway extends React.Component {
     constructor(props) {
         super(props);
+
+        this.state = {
+            components: new Array(),
+            nextID: 13
+        }
+    }
+
+    // Load fresh starting components
+    componentDidMount() {
+        this.addGate({
+            x: 30,
+            y: 30,
+            name: 'Testy Gater',
+            state: 'Partially Open',
+            status: 'Failed'
+        });
+    }
+
+    // Add a gate to the render state
+    addGate = (props) => {
+        props['componentID'] = this.state.nextID;
+        let newComp = new Gate(props);
+        let components = this.state.components.push(newComp);
+        let nextID = this.state.nextID++;
+
+        this.setState({
+            components: components,
+            nextID: nextID
+        });
     }
 
     render() {

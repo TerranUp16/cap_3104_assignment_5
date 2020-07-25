@@ -33,32 +33,6 @@ import * as helper from './helper';
     3.2.1.7.14 The operator shall be able to activate a detailed device status window for the loop or group of loops by double left clicking on the selected icon. A circle shall be displayed over the icon as long as the detailed device status window for that icon.
 */
 
-/*
-NEEDS-
-    Popover for loop detectors summary, status, and control- https://react-bootstrap.github.io/components/overlays/#popovers
-        Summary is on-hover
-        "Detailed stauts" is on double-left-click
-        Control is on right-click
-Props-
-    loopDetectorRangeColorNoData: Color,
-    loopDetectorRangeColorLow: Color,
-    loopDetectorRangeNumLow: Number,
-    loopDetectorRangeColorMed: Color,
-    loopDetectorRangeNumMed: Number,
-    loopDetectorRangeColorHigh: Color,
-    loopDetectorRangeNumHigh: Number,
-    loopDetectorColorData: [speed, volume, occupancy],
-    loopDetectorNSecond: Integer,
-    loopDetectorName: String,
-    loopDetectorShowName: [true, false],
-    loopDetectorSpeed: Number,
-    loopDetectorVolume: Number,
-    loopDetectorOccupancy: Number,
-    loopDetectorShowData: [true, false],
-    loopDetectorStatus: [data, no data],
-    loopDetectorShowStatus: [true, false],
-    loopDetectIsGroup: [true, false]
-*/
 class LoopDetector extends Component {
     constructor(props) {
         super(props);
