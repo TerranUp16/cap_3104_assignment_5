@@ -39,9 +39,10 @@ class LoopDetector extends Component {
 
         // Set of available images
         this.images = {
-            'Red': '/Images/gate-red.svg',
-            'Yellow': '/Images/gate-yellow.svg',
-            'Green': '/Images/gate-green.svg'
+            'Red': '/Images/loop-detector-red.svg',
+            'Yellow': '/Images/loop-detector-yellow.svg',
+            'Green': '/Images/loop-detector-green.svg',
+            'Gray': '/Images/loop-detector-gray.svg'
         }
 
         // Set of available images for group
