@@ -55,7 +55,7 @@ class WrongWayLights extends Component {
             name: name,
             state: state,
             status: status,
-            image: "/Images/gate-green.svg"
+            image: "/Images/wrong-way-green.svg"
         };
     }
 
@@ -63,28 +63,28 @@ class WrongWayLights extends Component {
     setImage = () => {
         if (this.state.state === 'Off' && this.state.status === 'Operational') {
             // Off draw lights painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/wrong-way-green.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'Operational w/Errors') {
             // Off draw lights painted yellow
-            this.setState({image: "/Images/gate-yellow.svg"});
+            this.setState({image: "/Images/wrong-way-yellow.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'Failed') {
             // Off draw lights painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/wrong-way-red.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'No Communication') {
             // Off draw lights painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/wrong-way-gray.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'Operational') {
             // On draw lights painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/wrong-way-green-on.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'Operational w/Errors') {
             // On draw lights painted yellow
-            this.setState({image: "/Images/gate-yellow.svg"});
+            this.setState({image: "/Images/wrong-way-yellow-on.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'Failed') {
             // On draw lights painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/wrong-way-red-on.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'No Communication') {
             // On draw lights painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/wrong-way-gray-on.svg"});
         } else if (this.state.state === 'Partially On' && this.state.status === 'Operational') {
             // Partially on draw lights painted green
             this.setState({image: "/Images/gate-green.svg"});
