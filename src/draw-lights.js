@@ -55,7 +55,7 @@ class DrawLights extends Component {
             name: name,
             state: state,
             status: status,
-            image: "/Images/gate-green.svg"
+            image: "/Images/draw-lights-green-on.svg"
         }
     }
 
@@ -63,28 +63,28 @@ class DrawLights extends Component {
     setImage = () => {
         if (this.state.state === 'Off' && this.state.status === 'Operational') {
             // Off draw lights painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/draw-lights-green-off.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'Operational w/Errors') {
             // Off draw lights painted yellow
-            this.setState({image: "/Images/gate-yellow.svg"});
+            this.setState({image: "/Images/draw-lights-gate-yellow-off.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'Failed') {
             // Off draw lights painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/draw-lights-gate-red-off.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'No Communication') {
             // Off draw lights painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/draw-lights-gray-off.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'Operational') {
             // On draw lights painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/draw-lights-green-on.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'Operational w/Errors') {
             // On draw lights painted yellow
-            this.setState({image: "/Images/gate-yellow.svg"});
+            this.setState({image: "/Images/draw-lights-yellow-on.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'Failed') {
             // On draw lights painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/draw-lights-red-on.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'No Communication') {
             // On draw lights painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/draw-lights-gray-on.svg"});
         } else if (this.state.state === 'Partially On' && this.state.status === 'Operational') {
             // Partially on draw lights painted green
             this.setState({image: "/Images/gate-green.svg"});
@@ -108,6 +108,7 @@ class DrawLights extends Component {
                     left: this.state.x,
                     top: this.state.y
                 }}
+                onClick={(e) => this.props.removeComponent(this.props.componentID)}
             >
                 <Figure
                     id={this.props.componentID}
@@ -161,6 +162,7 @@ class DrawLights extends Component {
                                     <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                                     <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
+                                {helper.addCloseButton(this)}
                             </Popover.Content>
                         </Popover>
                     )}

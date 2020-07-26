@@ -24,7 +24,7 @@ class Incident extends Component {
 
         // Set defaults
         let name = 'Incident';
-        let state = 'Waiting for Tow';
+        let state = 'New';
 
         // Override defaults based on props
         if (this.props.hasOwnProperty('name')) {
@@ -44,7 +44,8 @@ class Incident extends Component {
             ...this.state,
             name: name,
             state: state,
-            image: "/Images/gate-green.svg"
+            description: this.props.description,
+            image: "/Images/incident.svg"
         }
     }
 
@@ -52,16 +53,16 @@ class Incident extends Component {
     setImage = () => {
         if (this.state.state === 'Clear') {
             // Open road image
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/incident.svg"});
         } else if (this.state.state === 'Waiting for Tow') {
             // Tow truck image
-            this.setState({image: "/Images/gate-yellow.svg"});
+            this.setState({image: "/Images/incident.svg"});
         } else if (this.state.state === 'New') {
             // Car crash image
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/incident.svg"});
         } else {
             // Question mark for "Unknown"
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/incident.svg"});
         }
     }
 
@@ -73,6 +74,7 @@ class Incident extends Component {
                     left: this.state.x,
                     top: this.state.y
                 }}
+                onClick={(e) => this.props.removeComponent(this.props.componentID)}
             >
                 <Figure
                     id={this.props.componentID}
@@ -123,7 +125,9 @@ class Incident extends Component {
                             <Popover.Content>
                                 <ListGroup variant="flush">
                                     <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
+                                    <ListGroup.Item className="py-1">{`Details: ${this.state.description}`}</ListGroup.Item>
                                 </ListGroup>
+                                {helper.addCloseButton(this)}
                             </Popover.Content>
                         </Popover>
                     )}
@@ -147,6 +151,7 @@ class Incident extends Component {
                                         'New',
                                         'Unknown'
                                     ])}
+                                    {helper.addDescription(this.props.componentID, this, 'name', 'Change Detailed Description', this.state.description)}
                                     {helper.addSwitch(this.props.componentID, this, 'showName', 'Show name?')}
                                     {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
                                     {helper.addOkayButton(this)}
@@ -158,6 +163,10 @@ class Incident extends Component {
             </div>
         );
     }
+}
+
+Incident.defaultProps = {
+    description: 'White sedan crossed over median and collided head-on with black pickup. Police and fire en route but not yet on-scene.'
 }
 
 export default Incident;

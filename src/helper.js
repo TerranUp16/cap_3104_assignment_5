@@ -96,6 +96,21 @@ export const addText = (id, component, name, label, placeholder) => {
     )
 }
 
+export const addDescription = (id, component, name, label, placeholder) => {
+    return (
+        <Form.Group controlId={`${id}-${name}`}>
+            <Form.Label>{label}</Form.Label>
+            <Form.Control
+                as="textarea"
+                rows="3"
+                name={name}
+                placeholder={placeholder}
+                onChange={(e) => changeHandler(e, component)}
+            />
+        </Form.Group>
+    )
+}
+
 export const addSelect = (id, component, name, label, options) => {
     if (name === 'state' && component.state.safetyLock) {
         return (
@@ -171,7 +186,23 @@ export const addOkayButton = (component) => {
                 marginTop: 1 + 'em'
             }}
         >
-            Okay
+            Close
+        </Button>
+    )
+}
+
+export const addCloseButton = (component) => {
+    return (
+        <Button
+            variant="primary"
+            block
+            size="sm"
+            onClick={(e) => detailedStatus(component)}
+            style={{
+                marginTop: 1 + 'em'
+            }}
+        >
+            Close
         </Button>
     )
 }

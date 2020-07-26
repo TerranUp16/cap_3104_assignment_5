@@ -64,22 +64,22 @@ class Gate extends Component {
     setImage = () => {
         if (this.state.state === 'Open' && this.state.status === 'Operational') {
             // Open gate painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-green-open.svg"});
         } else if (this.state.state === 'Open' && this.state.status === 'Failed') {
             // Open gate painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/gate-red-open.svg"});
         } else if (this.state.state === 'Open' && this.state.status === 'No Data') {
             // Open gate painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/gate-gray-open.svg"});
         } else if (this.state.state === 'Partially Open' && this.state.status === 'Operational') {
             // Partially open gate painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/gate-green-partially-open.svg"});
         } else if (this.state.state === 'Partially Open' && this.state.status === 'Failed') {
             // Partially open gate painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/gate-red-partially-open.svg"});
         } else if (this.state.state === 'Partially Open' && this.state.status === 'No Data') {
             // Partially open gate painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/gate-gray-partially-open.svg"});
         } else if (this.state.state === 'Closed' && this.state.status === 'Operational') {
             // Closed gate painted green
             this.setState({image: "/Images/gate-green.svg"});
@@ -100,6 +100,7 @@ class Gate extends Component {
                     left: this.state.x,
                     top: this.state.y
                 }}
+                onClick={(e) => this.props.removeComponent(this.props.componentID)}
             >
                 <Figure
                     id={this.props.componentID}
@@ -153,6 +154,7 @@ class Gate extends Component {
                                     <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                                     <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
+                                {helper.addCloseButton(this)}
                             </Popover.Content>
                         </Popover>
                     )}

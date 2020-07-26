@@ -52,7 +52,7 @@ class CCTV extends Component {
             name: name,
             state: state,
             status: status,
-            image: "/Images/gate-green.svg"
+            image: "/Images/cctv-green.svg"
         }
     }
 
@@ -60,22 +60,22 @@ class CCTV extends Component {
     setImage = () => {
         if (this.state.state === 'On' && this.state.status === 'Operational') {
             // On camera painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/cctv-green.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'Failed') {
             // On camera painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/cctv-red.svg"});
         } else if (this.state.state === 'On' && this.state.status === 'No Data') {
             // On camera painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/cctv-gray.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'Operational') {
             // Off camera painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/cctv-green.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'Failed') {
             // Off camera painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/cctv-red.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'No Data') {
             // Off camera painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/cctv-gray.svg"});
         }
     }
 
@@ -87,6 +87,7 @@ class CCTV extends Component {
                     left: this.state.x,
                     top: this.state.y
                 }}
+                onClick={(e) => this.props.removeComponent(this.props.componentID)}
             >
                 <Figure
                     id={this.props.componentID}
@@ -140,6 +141,7 @@ class CCTV extends Component {
                                     <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                                     <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
+                                {helper.addCloseButton(this)}
                             </Popover.Content>
                         </Popover>
                     )}

@@ -48,10 +48,12 @@ class HOV extends Component {
         // Set state
         this.state = {
             ...this.state,
+            width: this.props.width,
+            height: this.props.height,
             name: name,
             state: state,
             status: status,
-            image: "/Images/gate-green.svg"
+            image: "/Images/hov-green-north.svg"
         }
     }
 
@@ -59,31 +61,31 @@ class HOV extends Component {
     setImage = () => {
         if (this.state.state === 'Open Northbound' && this.state.status === 'Operational') {
             // Northbound painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/hov-green-north.svg"});
         } else if (this.state.state === 'Open Northbound' && this.state.status === 'Failed') {
             // Northbound painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/hov-red-north.svg"});
         } else if (this.state.state === 'Open Northbound' && this.state.status === 'No Data') {
             // Northbound painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/hov-gray-north.svg"});
         } else if (this.state.state === 'Open Southbound' && this.state.status === 'Operational') {
             // Southbound painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/hov-green-south.svg"});
         } else if (this.state.state === 'Open Southbound' && this.state.status === 'Failed') {
             // Southbound painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/hov-red-south.svg"});
         } else if (this.state.state === 'Open Southbound' && this.state.status === 'No Data') {
             // Southbound painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/hov-gray-south.svg"});
         } else if (this.state.state === 'Closed' && this.state.status === 'Operational') {
             // Closed painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/hov-green-closed.svg"});
         } else if (this.state.state === 'Closed' && this.state.status === 'Failed') {
             // Closed painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/hov-red-closed.svg"});
         } else if (this.state.state === 'Closed' && this.state.status === 'No Data') {
             // Closed painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/hov-gray-closed.svg"});
         }
     }
 
@@ -95,6 +97,7 @@ class HOV extends Component {
                     left: this.state.x,
                     top: this.state.y
                 }}
+                onClick={(e) => this.props.removeComponent(this.props.componentID)}
             >
                 <Figure
                     id={this.props.componentID}
@@ -148,6 +151,7 @@ class HOV extends Component {
                                     <ListGroup.Item className="py-1">{`State: ${this.state.state}`}</ListGroup.Item>
                                     <ListGroup.Item className="py-1">{`Status: ${this.state.status}`}</ListGroup.Item>
                                 </ListGroup>
+                                {helper.addCloseButton(this)}
                             </Popover.Content>
                         </Popover>
                     )}
@@ -187,6 +191,11 @@ class HOV extends Component {
             </div>
         );
     }
+}
+
+HOV.defaultProps = {
+    width: 96,
+    height: 96
 }
 
 export default HOV;
