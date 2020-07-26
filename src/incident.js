@@ -151,7 +151,7 @@ class Incident extends Component {
                                         'New',
                                         'Unknown'
                                     ])}
-                                    {helper.addDescription(this.props.componentID, this, 'name', 'Change Detailed Description', this.state.description)}
+                                    {helper.addDescription(this.props.componentID, this, 'description', 'Change Detailed Description', this.state.description)}
                                     {helper.addSwitch(this.props.componentID, this, 'showName', 'Show name?')}
                                     {helper.addSwitch(this.props.componentID, this, 'showState', 'Show state?')}
                                     {helper.addOkayButton(this)}
