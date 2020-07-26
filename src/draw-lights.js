@@ -66,10 +66,10 @@ class DrawLights extends Component {
             this.setState({image: "/Images/draw-lights-green-off.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'Operational w/Errors') {
             // Off draw lights painted yellow
-            this.setState({image: "/Images/draw-lights-gate-yellow-off.svg"});
+            this.setState({image: "/Images/draw-lights-yellow-off.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'Failed') {
             // Off draw lights painted red
-            this.setState({image: "/Images/draw-lights-gate-red-off.svg"});
+            this.setState({image: "/Images/draw-lights-red-off.svg"});
         } else if (this.state.state === 'Off' && this.state.status === 'No Communication') {
             // Off draw lights painted gray
             this.setState({image: "/Images/draw-lights-gray-off.svg"});
