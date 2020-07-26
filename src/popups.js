@@ -63,7 +63,7 @@ class Popups extends Component {
     setImage = () => {
         if (this.state.status === 'Failed') {
             // If popup group is in a failed state, we need to display the failed state image regardless of whether state is up or down
-            this.setState({image: "/Images/popup-red-closed.svg"});
+            this.setState({image: "/Images/popup-red-open-closed.svg"});
         } else if (this.state.state === 'Up' && this.state.status === 'Operational') {
             // Up popup group painted green
             this.setState({image: "/Images/popup-green-closed.svg"});

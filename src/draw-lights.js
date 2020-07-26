@@ -87,16 +87,16 @@ class DrawLights extends Component {
             this.setState({image: "/Images/draw-lights-gray-on.svg"});
         } else if (this.state.state === 'Partially On' && this.state.status === 'Operational') {
             // Partially on draw lights painted green
-            this.setState({image: "/Images/gate-green.svg"});
+            this.setState({image: "/Images/draw-lights-green-on-off.svg"});
         } else if (this.state.state === 'Partially On' && this.state.status === 'Operational w/Errors') {
             // Partially on draw lights painted yellow
-            this.setState({image: "/Images/gate-yellow.svg"});
+            this.setState({image: "/Images/draw-lights-yellow-on-off.svg"});
         } else if (this.state.state === 'Partially On' && this.state.status === 'Failed') {
             // Partially on draw lights painted red
-            this.setState({image: "/Images/gate-red.svg"});
+            this.setState({image: "/Images/draw-lights-red-on-off.svg"});
         } else if (this.state.state === 'Partially On' && this.state.status === 'No Communication') {
             // Partially on draw lights painted gray
-            this.setState({image: "/Images/gate-gray.svg"});
+            this.setState({image: "/Images/draw-lights-gray-on-off.svg"});
         }
     }
 

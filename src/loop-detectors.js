@@ -47,9 +47,10 @@ class LoopDetector extends Component {
 
         // Set of available images for group
         this.groupImages = {
-            'Red': '/Images/gate-red.svg',
-            'Yellow': '/Images/gate-yellow.svg',
-            'Green': '/Images/gate-green.svg'
+            'Red': '/Images/loop-detector-group-red.svg',
+            'Yellow': '/Images/loop-detector-group-yellow.svg',
+            'Green': '/Images/loop-detector-group-green.svg',
+            'Gray': '/Images/loop-detector-group-gray.svg'
         }
 
         // Set defaults
@@ -425,17 +426,20 @@ class LoopDetector extends Component {
                                                     {helper.addSelect(this.props.componentID, this, 'lowColor', 'Low Color', [
                                                         'Green',
                                                         'Yellow',
-                                                        'Red'
+                                                        'Red',
+                                                        'Gray'
                                                     ])}
                                                     {helper.addSelect(this.props.componentID, this, 'midColor', 'Mid Color', [
                                                         'Green',
                                                         'Yellow',
-                                                        'Red'
+                                                        'Red',
+                                                        'Gray'
                                                     ])}
                                                     {helper.addSelect(this.props.componentID, this, 'highColor', 'High Color', [
                                                         'Green',
                                                         'Yellow',
-                                                        'Red'
+                                                        'Red',
+                                                        'Gray'
                                                     ])}
                                                 </Card.Body>
                                             </Accordion.Collapse>
