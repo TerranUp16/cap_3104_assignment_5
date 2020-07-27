@@ -4,8 +4,11 @@
 
 # Install
 
+Using PowerShell or BASH-
 ```
 git clone https://github.com/TerranUp16/cap_3104_assignment_5.git ;
+cd cap_3104_assignment_5 ;
+npm install ;
 ```
 
 # Run
